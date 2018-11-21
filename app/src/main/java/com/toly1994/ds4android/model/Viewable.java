@@ -10,8 +10,12 @@ public class Viewable {
     public float x;//单体的x坐标
     public float y;//单体的y坐标
     public int color = 0xff43A3FA;//单体的颜色
+
     public float vX;//单体的水平速度
     public float vY;//单体的数值速度
+
+    public Viewable() {
+    }
 
     public Viewable(float x, float y) {
         this.x = x;

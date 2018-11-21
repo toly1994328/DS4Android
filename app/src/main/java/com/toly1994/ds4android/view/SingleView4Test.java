@@ -12,7 +12,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.toly1994.ds4android.analyze.HelpDraw;
-import com.toly1994.ds4android.model.ArrayBox;
 
 /**
  * 作者：张风捷特烈<br/>
@@ -20,7 +19,7 @@ import com.toly1994.ds4android.model.ArrayBox;
  * 邮箱：1981462002@qq.com<br/>
  * 说明：
  */
-public class SingleView extends View {
+public class SingleView4Test extends View {
     private Point mCoo = new Point(500, 500);//坐标系
     private Picture mCooPicture;//坐标系canvas元件
     private Picture mGridPicture;//网格canvas元件
@@ -31,11 +30,11 @@ public class SingleView extends View {
     private Paint mDataPaint;
     private Paint mPathPaint;
 
-    public SingleView(Context context) {
+    public SingleView4Test(Context context) {
         this(context, null);
     }
 
-    public SingleView(Context context, @Nullable AttributeSet attrs) {
+    public SingleView4Test(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();//初始化
     }
@@ -75,15 +74,22 @@ public class SingleView extends View {
         canvas.save();
         canvas.translate(mCoo.x, mCoo.y);
 
-//        arrayView(canvas);
-//        singleLink(canvas);
-//        DoubleLink(canvas);
-//        BST(canvas);
+//        arrayView(canvas);//数组
+//        singleLink(canvas);//单链表
+//        DoubleLink(canvas);//双链表
+//        BST(canvas);//二叉树
+        bAr(canvas);//红黑树
 
+
+        canvas.restore();
+//        HelpDraw.draw(canvas, mGridPicture, mCooPicture);
+    }
+
+    private void bAr(Canvas canvas) {
         mPath.moveTo(0 + Cons.BST_RADIUS / 2, 0 + Cons.BST_RADIUS / 2);
-        mPath.rLineTo(100, 100);
+        mPath.rLineTo(150, 150);
         mPath.moveTo(0 - Cons.BST_RADIUS / 2, 0 + Cons.BST_RADIUS / 2);
-        mPath.rLineTo(-100, 100);
+        mPath.rLineTo(-150, 150);
 
         canvas.drawPath(mPath, mPathPaint);
 
@@ -91,124 +97,105 @@ public class SingleView extends View {
         canvas.drawCircle(0, 0, Cons.BST_RADIUS, mPaint);
         canvas.drawText("50", 0, 10, mDataPaint);
 
-        int offsetLeftX =  100 + Cons.BST_RADIUS / 2;
-        int offsetLeftY =  100 + Cons.BST_RADIUS / 2;
-
+        //绘制子节点
+        int offsetX = 150;//子圆心偏移X
+        int offsetY = 150;//子圆心偏移Y
         mPaint.setColor(Color.RED);
-        canvas.drawCircle(0 -offsetLeftX, 0+ offsetLeftY, Cons.BST_RADIUS, mPaint);
-        canvas.drawText("35", 0-offsetLeftX, 10 +offsetLeftY, mDataPaint);
+        canvas.drawCircle(0 - offsetX, 0 + offsetY, Cons.BST_RADIUS, mPaint);
+        canvas.drawText("35", 0 - offsetX, 10 + offsetY, mDataPaint);
 
         mPaint.setColor(Color.BLACK);
-        canvas.drawCircle(offsetLeftX, offsetLeftY, Cons.BST_RADIUS, mPaint);
-        canvas.drawText("78", offsetLeftX, 10 +offsetLeftY, mDataPaint);
-
-
-        canvas.restore();
-//        HelpDraw.draw(canvas, mGridPicture, mCooPicture);
+        canvas.drawCircle(offsetX, offsetY, Cons.BST_RADIUS, mPaint);
+        canvas.drawText("78", offsetX, 10 + offsetY, mDataPaint);
     }
 
     private void BST(Canvas canvas) {
+        //先画线,圆将先盖住
         mPath.moveTo(0 + Cons.BST_RADIUS / 2, 0 + Cons.BST_RADIUS / 2);
-        mPath.rLineTo(100, 100);
+        mPath.rLineTo(150, 150);
         mPath.moveTo(0 - Cons.BST_RADIUS / 2, 0 + Cons.BST_RADIUS / 2);
-        mPath.rLineTo(-100, 100);
-
+        mPath.rLineTo(-150, 150);
         canvas.drawPath(mPath, mPathPaint);
 
+        //父节点绘制
         canvas.drawCircle(0, 0, Cons.BST_RADIUS, mPaint);
         canvas.drawText("0", 0, 10, mDataPaint);
+        //绘制子节点
+        int offsetX = 150;//子圆心偏移X
+        int offsetY = 150;//子圆心偏移Y
+        canvas.drawCircle(0 - offsetX, 0 + offsetY, Cons.BST_RADIUS, mPaint);
+        canvas.drawText("null", 0 - offsetX, 10 + offsetY, mDataPaint);
 
-
-//        mPath.moveTo(0 - Cons.BST_RADIUS, 0 + Cons.BST_RADIUS);
-//        mPath.rLineTo(-100, 100);
-
-        int offsetLeftX =  100 + Cons.BST_RADIUS / 2;
-        int offsetLeftY =  100 + Cons.BST_RADIUS / 2;
-
-        canvas.drawCircle(0 -offsetLeftX, 0+ offsetLeftY, Cons.BST_RADIUS, mPaint);
-        canvas.drawText("null", 0-offsetLeftX, 10 +offsetLeftY, mDataPaint);
-
-        canvas.drawCircle(offsetLeftX, offsetLeftY, Cons.BST_RADIUS, mPaint);
-        canvas.drawText("null", offsetLeftX, 10 +offsetLeftY, mDataPaint);
+        canvas.drawCircle(offsetX, offsetY, Cons.BST_RADIUS, mPaint);
+        canvas.drawText("null", offsetX, 10 + offsetY, mDataPaint);
     }
 
     private void DoubleLink(Canvas canvas) {
+        //画圆角矩形没什么好说的
         canvas.drawRoundRect(
-                0, 0, ArrayBox.BOX_WIDTH, ArrayBox.BOX_HEIGHT,
+                0, 0, Cons.BOX_WIDTH, Cons.BOX_HEIGHT,
                 Cons.BOX_RADIUS, Cons.BOX_RADIUS, mPaint);
-
-
-        mPath.rCubicTo(ArrayBox.BOX_WIDTH / 2, ArrayBox.BOX_HEIGHT / 2,
-                ArrayBox.BOX_WIDTH / 2, ArrayBox.BOX_HEIGHT / 2, ArrayBox.BOX_WIDTH, 0);
-
-        mPath.lineTo(ArrayBox.BOX_WIDTH, ArrayBox.BOX_HEIGHT / 2.2f);
+        //画路径
+        mPath.rCubicTo(
+                Cons.BOX_WIDTH / 2, Cons.BOX_HEIGHT / 2,
+                Cons.BOX_WIDTH / 2, Cons.BOX_HEIGHT / 2,
+                Cons.BOX_WIDTH, 0);
+        mPath.lineTo(Cons.BOX_WIDTH, Cons.BOX_HEIGHT / 2.2f);
         mPath.rLineTo(Cons.LINK_LEN, 0);
         mPath.rLineTo(-Cons.ARROW_DX, -Cons.ARROW_DX);
 
         mPath.moveTo(0, 0);
-        mPath.rLineTo(0, ArrayBox.BOX_HEIGHT / 1.2f);
+        mPath.rLineTo(0, Cons.BOX_HEIGHT / 1.2f);
         mPath.rLineTo(-Cons.LINK_LEN - Cons.ARROW_DX, 0);
         mPath.rLineTo(Cons.ARROW_DX, Cons.ARROW_DX);
-
         canvas.drawPath(mPath, mPathPaint);
-
+        //绘制文字没什么好说的
         canvas.drawText("0",
-                ArrayBox.BOX_WIDTH / 2,
+                Cons.BOX_WIDTH / 2,
                 3 * 10, mDataPaint);
-
         canvas.drawText("toly",
-                0 + ArrayBox.BOX_WIDTH / 2,
-                0 + ArrayBox.BOX_HEIGHT / 2 + 3 * 10, mDataPaint);
+                0 + Cons.BOX_WIDTH / 2,
+                0 + Cons.BOX_HEIGHT / 2 + 3 * 10, mDataPaint);
     }
 
     private void singleLink(Canvas canvas) {
+        //画圆角矩形没什么好说的
         canvas.drawRoundRect(
-                0, 0, ArrayBox.BOX_WIDTH, ArrayBox.BOX_HEIGHT,
+                0, 0, Cons.BOX_WIDTH, Cons.BOX_HEIGHT,
                 Cons.BOX_RADIUS, Cons.BOX_RADIUS, mPaint);
-
-
-        mPath.rCubicTo(ArrayBox.BOX_WIDTH / 2, ArrayBox.BOX_HEIGHT / 2,
-                ArrayBox.BOX_WIDTH / 2, ArrayBox.BOX_HEIGHT / 2, ArrayBox.BOX_WIDTH, 0);
-
-        mPath.lineTo(ArrayBox.BOX_WIDTH, ArrayBox.BOX_HEIGHT / 2f);
-        mPath.rLineTo(Cons.LINK_LEN, 0);
-        mPath.rLineTo(-Cons.ARROW_DX, -Cons.ARROW_DX);
-
-//        mPath.moveTo(0, 0);
-//        mPath.rLineTo(0,ArrayBox.BOX_HEIGHT / 1.2f);
-//        mPath.rLineTo(-Cons.LINK_LEN-Cons.ARROW_DX, 0);
-//        mPath.rLineTo(Cons.ARROW_DX, Cons.ARROW_DX);
-
+        //画路径
+        mPath.rCubicTo(
+                Cons.BOX_WIDTH / 2, Cons.BOX_HEIGHT / 2,
+                Cons.BOX_WIDTH / 2, Cons.BOX_HEIGHT / 2,
+                Cons.BOX_WIDTH, 0);
+        mPath.rLineTo(0, Cons.BOX_HEIGHT / 2f);//往下画线走半高
+        mPath.rLineTo(Cons.LINK_LEN, 0);//往左画线走线长
+        mPath.rLineTo(-Cons.ARROW_DX, -Cons.ARROW_DX);//画箭头
         canvas.drawPath(mPath, mPathPaint);
-
-        canvas.drawText("0",
-                ArrayBox.BOX_WIDTH / 2,
-                3 * 10, mDataPaint);
-
-
+        //绘制文字没什么好说的
+        canvas.drawText("0", Cons.BOX_WIDTH / 2, 3 * 10, mDataPaint);
         canvas.drawText("toly",
-                0 + ArrayBox.BOX_WIDTH / 2,
-                0 + ArrayBox.BOX_HEIGHT / 2 + 3 * 10, mDataPaint);
+                0 + Cons.BOX_WIDTH / 2, 0 + Cons.BOX_HEIGHT / 2 + 3 * 10, mDataPaint);
     }
 
     private void arrayView(Canvas canvas) {
+        //画圆角矩形没什么好说的
         canvas.drawRoundRect(
-                0, 0, ArrayBox.BOX_WIDTH, ArrayBox.BOX_HEIGHT,
-                10, 10, mPaint);
-
+                0, 0, Cons.BOX_WIDTH, Cons.BOX_HEIGHT,
+                Cons.BOX_RADIUS, Cons.BOX_RADIUS, mPaint);
+        //绘制贝塞尔弧线
         mPath.moveTo(0, 0);
-        mPath.rCubicTo(ArrayBox.BOX_WIDTH / 2, ArrayBox.BOX_HEIGHT / 2,
-                ArrayBox.BOX_WIDTH / 2, ArrayBox.BOX_HEIGHT / 2, ArrayBox.BOX_WIDTH, 0);
-
+        mPath.rCubicTo(
+                Cons.BOX_WIDTH / 2, Cons.BOX_HEIGHT / 2,//控制点1
+                Cons.BOX_WIDTH / 2, Cons.BOX_HEIGHT / 2,//控制点2
+                Cons.BOX_WIDTH, 0);//终点
         canvas.drawPath(mPath, mPathPaint);
-
+        //绘制文字没什么好说的
         canvas.drawText("0",
-                ArrayBox.BOX_WIDTH / 2,
+                Cons.BOX_WIDTH / 2,
                 3 * 10, mDataPaint);
-
-
         canvas.drawText("toly",
-                0 + ArrayBox.BOX_WIDTH / 2,
-                0 + ArrayBox.BOX_HEIGHT / 2 + 3 * 10, mDataPaint);
+                0 + Cons.BOX_WIDTH / 2,
+                0 + Cons.BOX_HEIGHT / 2 + 3 * 10, mDataPaint);
     }
 }

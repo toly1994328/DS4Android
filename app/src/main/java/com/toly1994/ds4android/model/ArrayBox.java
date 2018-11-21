@@ -7,8 +7,6 @@ package com.toly1994.ds4android.model;
  * 说明：模型层数组的单体
  */
 public class ArrayBox<T> extends Viewable {
-    public static final int BOX_HEIGHT = 100;//一个数组盒子的高
-    public static final int BOX_WIDTH = 200;//一个数组盒子的宽
 
     public int index;//数组单体索引
     public T data;//数据结构承载的核心数据

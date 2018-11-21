@@ -1,5 +1,6 @@
 package com.toly1994.ds4android.view;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 import com.toly1994.ds4android.analyze.ColUtils;
 import com.toly1994.ds4android.analyze.HelpDraw;
@@ -31,6 +33,8 @@ public class ArrayView<E> extends View {
     private Picture mCooPicture;//坐标系canvas元件
     private Picture mGridPicture;//网格canvas元件
     private Paint mHelpPint;//辅助画笔
+
+    private long mCurTime;
 
     private Paint mPaint;//主画笔
     private Path mPath;//主路径
@@ -55,6 +59,7 @@ public class ArrayView<E> extends View {
             new Point(-100, 500),//查看按键的点位
             new Point(-100, 700),//删除按键的点位
     };
+
     private static int[] CTRL_COLOR = new int[]{
             0xff1EF519,//添加按键的颜色
             0xff2992F2,//更新按键的颜色
@@ -69,12 +74,9 @@ public class ArrayView<E> extends View {
             "删除",//删除按键的颜色
     };
 
-    //    private static final Point CTRL_ADD_POS = new Point(-100, 100);//添加按键的点位
-//    private static final Point CTRL_UPDATE_POS = new Point(-100, 300);//添加按键的点位
-//    private static final Point CTRL_FIND_POS = new Point(-100, 500);//添加按键的点位
-//    private static final Point CTRL_DELETE_POS = new Point(-100, 700);//添加按键的点位
     private static final int CTRL_RADIUS = 50;//控制圆半径
     private Paint mPathPaint;//路径画笔
+    private ValueAnimator mAnimator;
 
 
     public void setOnCtrlClickListener(OnCtrlClickListener<ArrayView<E>> onCtrlClickListener) {
@@ -120,6 +122,18 @@ public class ArrayView<E> extends View {
         mHelpPint = HelpDraw.getHelpPint(Color.RED);
         mCooPicture = HelpDraw.getCoo(getContext(), mCoo);
         mGridPicture = HelpDraw.getGrid(getContext());
+
+
+        //初始化时间流ValueAnimator
+        mAnimator = ValueAnimator.ofFloat(0, 1);
+        mAnimator.setRepeatCount(-1);
+        mAnimator.setDuration(2000);
+        mAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        mAnimator.setInterpolator(new LinearInterpolator());
+        mAnimator.addUpdateListener(animation -> {
+            updateBall();//更新小球位置
+            invalidate();
+        });
     }
 
 
@@ -135,22 +149,22 @@ public class ArrayView<E> extends View {
             ArrayBox box = mArrayBoxes.get(i);
             mPaint.setColor(box.color);
             canvas.drawRoundRect(
-                    box.x, box.y, box.x + ArrayBox.BOX_WIDTH, box.y + ArrayBox.BOX_HEIGHT,
+                    box.x, box.y, box.x + Cons.BOX_WIDTH, box.y + Cons.BOX_HEIGHT,
                     BOX_RADIUS, BOX_RADIUS, mPaint);
 
             mPath.moveTo(box.x, box.y);
-            mPath.rCubicTo(ArrayBox.BOX_WIDTH / 2, ArrayBox.BOX_HEIGHT / 2,
-                    ArrayBox.BOX_WIDTH / 2, ArrayBox.BOX_HEIGHT / 2, ArrayBox.BOX_WIDTH, 0);
+            mPath.rCubicTo(Cons.BOX_WIDTH / 2, Cons.BOX_HEIGHT / 2,
+                    Cons.BOX_WIDTH / 2, Cons.BOX_HEIGHT / 2, Cons.BOX_WIDTH, 0);
 
             canvas.drawPath(mPath, mPathPaint);
 
             canvas.drawText(box.index + "",
-                    box.x + ArrayBox.BOX_WIDTH / 2,
-                    box.y + 3*OFFSET_OF_INDEX_Y, mDataPaint);
+                    box.x + Cons.BOX_WIDTH / 2,
+                    box.y + 3 * OFFSET_OF_INDEX_Y, mDataPaint);
 
             canvas.drawText(box.data + "",
-                    box.x + ArrayBox.BOX_WIDTH / 2,
-                    box.y + ArrayBox.BOX_HEIGHT / 2 + 3*OFFSET_OF_INDEX_Y, mDataPaint);
+                    box.x + Cons.BOX_WIDTH / 2,
+                    box.y + Cons.BOX_HEIGHT / 2 + 3 * OFFSET_OF_INDEX_Y, mDataPaint);
 
         }
         ctrlView(canvas);
@@ -214,15 +228,15 @@ public class ArrayView<E> extends View {
                 //删除区域判定
                 if (JudgeMan.judgeCircleArea(CTRL_POS[3].x, CTRL_POS[3].y, downX, downY, CTRL_RADIUS * 1.2f)) {
                     if (mOnCtrlClickListener != null) {
-                        mOnCtrlClickListener.onRemove(this);
+                        mAnimator.start();
+                        mCurTime = System.currentTimeMillis();
                         CTRL_COLOR[3] = 0xff54E1F8;
-
                     }
                 }
 
 
-                float x = downX / (ArrayBox.BOX_WIDTH + OFFSET_X) - 0.5f;
-                float y = downY / (ArrayBox.BOX_HEIGHT + OFFSET_Y) - 0.5f;
+                float x = downX / (Cons.BOX_WIDTH + OFFSET_X) - 0.5f;
+                float y = downY / (Cons.BOX_HEIGHT + OFFSET_Y) - 0.5f;
 
                 if (x > -0.5 && y > -0.5) {
                     int indexOfData = Math.round(y) * 8 + Math.round(x);
@@ -243,6 +257,37 @@ public class ArrayView<E> extends View {
         invalidate();
         return true;
     }
+
+    /**
+     * 更新小球
+     */
+    private void updateBall() {
+        ArrayBox ball = mArrayBoxes.get(selectIndex);
+        ball.x += ball.vX;
+        ball.y += ball.vY;
+
+        if (ball.y > 800) {
+            if (mOnCtrlClickListener != null) {
+                mOnCtrlClickListener.onRemove(this);
+                mAnimator.pause();
+            }
+        }
+
+//        if (System.currentTimeMillis() - mCurTime > 2000) {
+//            if (mOnCtrlClickListener != null) {
+//                mOnCtrlClickListener.onRemove(this);
+//                mAnimator.pause();
+//            }
+//        }
+
+
+//        ArrayBox arrayBox = mArrayBoxes.get(index);
+//        arrayBox.x += arrayBox.vX;
+//        arrayBox.y += arrayBox.vY;
+//        L.d(index+L.l());
+//
+    }
+
 
     /**
      * 视图的数据操作接口方法--添加
@@ -287,8 +332,11 @@ public class ArrayView<E> extends View {
             int x = i % 8;//列坐标
 
             ArrayBox box = mArrayBoxes.get(i);
-            box.x = (ArrayBox.BOX_WIDTH + OFFSET_X) * x;
-            box.y = (ArrayBox.BOX_HEIGHT + OFFSET_Y) * y;
+            box.x = (Cons.BOX_WIDTH + OFFSET_X) * x;
+            box.y = (Cons.BOX_HEIGHT + OFFSET_Y) * y;
+            box.vY = 100;
+            box.vX = 100;
+
         }
 
     }
