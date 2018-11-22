@@ -32,6 +32,11 @@
 
 ![数组的扩容与缩容](https://upload-images.jianshu.io/upload_images/9414344-cd9e34edd4e06e31.gif?imageMogr2/auto-orient/strip)
 
+>单链表
+
+![单链表.gif](https://upload-images.jianshu.io/upload_images/9414344-620fbc5eaa7c5cc7.gif?imageMogr2/auto-orient/strip)
+
+
 ##### 2.说说我对数据结构的理解吧：
 >1---数据结构=数据+结构：
 2---说到结构，我第一反应就是生物的骨架，而数据则是附着在骨架上的躯体。

@@ -14,6 +14,7 @@ public class SingleLinkedChart<T> implements IChart<T> {
      * 虚拟头结点
      */
     private Node headNode;
+
     protected int size;
 
     public SingleLinkedChart() {
@@ -50,11 +51,24 @@ public class SingleLinkedChart<T> implements IChart<T> {
 
     @Override
     public int removeEl(T el) {
-        return 0;
+        int[] indexes = getIndex(el);
+        int index = -1;
+        if (indexes.length > 0) {
+            index = indexes[0];
+            remove(indexes[0]);
+        }
+        return index;
     }
 
     @Override
     public boolean removeEls(T el) {
+        int[] indexArray = getIndex(el);
+        if (indexArray.length != 0) {
+            for (int i = 0; i < indexArray.length; i++) {
+                remove(indexArray[i] - i); // 注意-i
+            }
+            return true;
+        }
         return false;
     }
 
@@ -66,7 +80,10 @@ public class SingleLinkedChart<T> implements IChart<T> {
 
     @Override
     public T set(int index, T el) {
-        return null;
+        if (index < 0 || index > size) {
+            throw new IllegalArgumentException("ISet failed. Illegal index");
+        }
+        return setNode(index + 1, el).el;
     }
 
     @Override
@@ -80,12 +97,35 @@ public class SingleLinkedChart<T> implements IChart<T> {
 
     @Override
     public int[] getIndex(T el) {
-        return new int[0];
+        //临时数组
+        int[] tempArray = new int[size];
+        //重复个数
+        int index = 0;
+        int count = 0;
+        Node node = headNode.next;
+        while (node != null) {
+            if (el.equals(node.el)) {
+                tempArray[index] = -1;
+                count++;
+            }
+            index++;
+            node = node.next;
+        }
+        //将临时数组压缩
+        int[] indexArray = new int[count];
+        int indexCount = 0;
+        for (int i = 0; i < tempArray.length; i++) {
+            if (tempArray[i] == -1) {
+                indexArray[indexCount] = i;
+                indexCount++;
+            }
+        }
+        return indexArray;
     }
 
     @Override
     public boolean contains(T el) {
-        return false;
+        return getIndex(el).length != 0;
     }
 
     @Override
@@ -100,7 +140,7 @@ public class SingleLinkedChart<T> implements IChart<T> {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     @Override

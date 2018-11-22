@@ -248,6 +248,10 @@ public class SingleLinkedView<E> extends View {
                             switch (i) {
                                 case 0://插入尾部
                                     mOnCtrlClickListener.onAdd(this);
+                                    if (selectIndex > 0) {
+                                        mArrayBoxes.get(selectIndex).color = 0xff43A3FA;
+                                        selectIndex = -1;
+                                    }
                                     break;
                                 case 1://更新
                                     mOnCtrlClickListener.onSet(this);
@@ -257,12 +261,18 @@ public class SingleLinkedView<E> extends View {
                                     mOnCtrlClickListener.onFind(this);
                                     break;
                                 case 3://删除尾部
-                                    mArrayBoxes.get(selectIndex).color = 0xff43A3FA;
+                                    if (selectIndex > 0) {//如果有选中的颜色，先复原
+                                        mArrayBoxes.get(selectIndex).color = 0xff43A3FA;
+                                    }
                                     selectIndex = mArrayBoxes.size() - 1;
                                     mAnimator.start();
                                     break;
-                                case 4://定点添加尾部
-                                    mOnCtrlClickListener.onAddByIndex(this);
+                                case 4://定点添加
+                                    if (selectIndex > 0) {
+                                        mArrayBoxes.get(selectIndex).color = 0xff43A3FA;
+                                        mOnCtrlClickListener.onAddByIndex(this);
+                                        selectIndex = -1;
+                                    }
                                     break;
                                 case 5://定值查询
                                     mOnCtrlClickListener.onFindByData(this);
@@ -458,9 +468,9 @@ public class SingleLinkedView<E> extends View {
             SingleNode box = mArrayBoxes.get(i);
             box.x = (Cons.BOX_WIDTH + OFFSET_X) * x;
             box.y = (Cons.BOX_HEIGHT + OFFSET_Y) * y;
-            box.index = i + 1;
+            box.index = i;
             box.vY = 50;
-            box.vX = 50;
+            box.vX = 0;
         }
     }
 
