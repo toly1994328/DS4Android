@@ -37,16 +37,6 @@
 ![单链表.gif](https://upload-images.jianshu.io/upload_images/9414344-620fbc5eaa7c5cc7.gif?imageMogr2/auto-orient/strip)
 
 
-##### 2.说说我对数据结构的理解吧：
->1---数据结构=数据+结构：
-2---说到结构，我第一反应就是生物的骨架，而数据则是附着在骨架上的躯体。
-3---躯体外显，骨架内隐，骨架的行为在躯体上表现。很符合数据与结构的关系。
-4---简而言之，我认为结构是数据的载体，数据是结构行为的体现。
-5---血肉大同小异，但骨骼千差万别，有的灵巧娇小，有的笨重硕大，但各有千秋。
-
-
-
-
 ##### 3.总体的思路
 
 ![综述.png](https://upload-images.jianshu.io/upload_images/9414344-99a900ad5ffc4ac5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
