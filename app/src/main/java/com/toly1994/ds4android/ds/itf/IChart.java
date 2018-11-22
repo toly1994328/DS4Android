@@ -18,18 +18,11 @@ public interface IChart<T> {
     void add(int index, T el);
 
     /**
-     * 首添加
-     *
-     * @param el 数据元素
-     */
-    void addFirst(T el);
-
-    /**
      * 添加尾
      *
      * @param el 数据元素
      */
-    void addLast(T el);
+    void add(T el);
 
 //endregion
 
@@ -43,19 +36,13 @@ public interface IChart<T> {
      */
     T remove(int index);
 
-    /**
-     * 删除首位
-     *
-     * @return 删除的元素
-     */
-    T removeFirst();
 
     /**
      * 删除尾位
      *
      * @return 删除的元素
      */
-    T removeLast();
+    T remove();
 
     /**
      * 删除指定元素的第一次出现时
@@ -148,6 +135,12 @@ public interface IChart<T> {
      * @return 大小
      */
     int size();
+
+    /**
+     * 获取数组容量
+     * @return 数组容量
+     */
+    int capacity();
 
 //endregion
 

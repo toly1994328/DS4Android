@@ -10,9 +10,17 @@ public interface OnCtrlClickListener<T> {
 
     void onAdd(T view);
 
+    void onAddByIndex(T view);
+
     void onRemove(T view);
+
+    void onRemoveByIndex(T view);
 
     void onSet(T view);
 
     void onFind(T view);
+
+    void onFindByData(T view);
+
+    void onClear(T view);
 }

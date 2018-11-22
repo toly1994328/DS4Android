@@ -16,11 +16,11 @@ import android.view.animation.LinearInterpolator;
 
 import com.toly1994.ds4android.analyze.ColUtils;
 import com.toly1994.ds4android.analyze.HelpDraw;
+import com.toly1994.ds4android.analyze.L;
 import com.toly1994.ds4android.analyze.gold12.JudgeMan;
+import com.toly1994.ds4android.ds.impl.ArrayChart;
+import com.toly1994.ds4android.ds.itf.IChart;
 import com.toly1994.ds4android.model.ArrayBox;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 作者：张风捷特烈<br/>
@@ -29,17 +29,15 @@ import java.util.List;
  * 说明：
  */
 public class ArrayView<E> extends View {
-    private Point mCoo = new Point(200, 100);//坐标系
+    private Point mCoo = new Point(200, 150);//坐标系
     private Picture mCooPicture;//坐标系canvas元件
     private Picture mGridPicture;//网格canvas元件
-    private Paint mHelpPint;//辅助画笔
 
-    private long mCurTime;
 
     private Paint mPaint;//主画笔
     private Path mPath;//主路径
 
-    private List<ArrayBox<E>> mArrayBoxes = new ArrayList<>();
+    private IChart<ArrayBox<E>> mArrayBoxes = new ArrayChart<>();
 
 
     private static final int OFFSET_X = 10;//X空隙
@@ -58,6 +56,12 @@ public class ArrayView<E> extends View {
             new Point(-100, 300),//更新按键的点位
             new Point(-100, 500),//查看按键的点位
             new Point(-100, 700),//删除按键的点位
+
+            new Point(700, -70),//定点添加的点位
+            new Point(700 + 300, -70),//定值查询的点位
+            new Point(700 + 300 * 2, -70),//定点删除按键的点位
+            new Point(700 + 300 * 3, -70),//清除按键的点位
+
     };
 
     private static int[] CTRL_COLOR = new int[]{
@@ -65,13 +69,23 @@ public class ArrayView<E> extends View {
             0xff2992F2,//更新按键的颜色
             0xffB946F4,//添加按键的颜色
             0xffF50C0C,//删除按键的颜色
+
+            0xff1EF519,//定点添加按键的颜色
+            0xffB946F4,//定值查询按键的颜色
+            0xffF50C0C,//定点删除按键的颜色
+            0xffF46410,//清除按键的颜色
     };
 
     private static final String[] CTRL_TXT = new String[]{
-            "添加",//添加按键的颜色
-            "更新",//更新按键的颜色
-            "查寻",//添加按键的颜色
-            "删除",//删除按键的颜色
+            "添加",//添加按键的文字
+            "更新",//更新按键的文字
+            "查寻",//添加按键的文字
+            "删除",//删除按键的文字
+
+            "定点+",//定点添加的文字
+            "值查",//定值查询按键的文字
+            "定点-",//定点删除按键的文字
+            "清空",//清除按键的文字
     };
 
     private static final int CTRL_RADIUS = 50;//控制圆半径
@@ -112,17 +126,14 @@ public class ArrayView<E> extends View {
         mPathPaint.setStyle(Paint.Style.STROKE);
 
 
+        mCooPicture = HelpDraw.getCoo(getContext(), mCoo);
+        mGridPicture = HelpDraw.getGrid(getContext());
+
         //初始化数据画笔
         mCtrlPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCtrlPaint.setColor(Color.RED);
         mCtrlPaint.setTextAlign(Paint.Align.CENTER);
         mCtrlPaint.setTextSize(30);
-
-        //初始化辅助
-        mHelpPint = HelpDraw.getHelpPint(Color.RED);
-        mCooPicture = HelpDraw.getCoo(getContext(), mCoo);
-        mGridPicture = HelpDraw.getGrid(getContext());
-
 
         //初始化时间流ValueAnimator
         mAnimator = ValueAnimator.ofFloat(0, 1);
@@ -143,7 +154,13 @@ public class ArrayView<E> extends View {
         HelpDraw.draw(canvas, mGridPicture);
         canvas.save();
         canvas.translate(mCoo.x, mCoo.y);
-        canvas.drawText("线性表", -100, 0, mPaint);
+        mPaint.setColor(Color.BLUE);
+        mPaint.setStyle(Paint.Style.FILL);
+
+        mDataPaint.setColor(Color.WHITE);
+
+        canvas.drawText("线性表", -100, -50, mPaint);
+        canvas.drawText("当前选中点：" + selectIndex, 250, -50, mPaint);
         mPath.reset();
         for (int i = 0; i < mArrayBoxes.size(); i++) {
             ArrayBox box = mArrayBoxes.get(i);
@@ -158,18 +175,39 @@ public class ArrayView<E> extends View {
 
             canvas.drawPath(mPath, mPathPaint);
 
-            canvas.drawText(box.index + "",
-                    box.x + Cons.BOX_WIDTH / 2,
-                    box.y + 3 * OFFSET_OF_INDEX_Y, mDataPaint);
+//            canvas.drawText(box.index + "",
+//                    box.x + Cons.BOX_WIDTH / 2,
+//                    box.y + 3 * OFFSET_OF_INDEX_Y, mDataPaint);
 
             canvas.drawText(box.data + "",
                     box.x + Cons.BOX_WIDTH / 2,
                     box.y + Cons.BOX_HEIGHT / 2 + 3 * OFFSET_OF_INDEX_Y, mDataPaint);
 
         }
+
         ctrlView(canvas);
+        helpView(canvas);//辅助视图
+
         canvas.restore();
         HelpDraw.draw(canvas, mCooPicture);
+    }
+
+    private void helpView(Canvas canvas) {
+        for (int i = 0; i < mArrayBoxes.capacity(); i++) {
+            int y = i / 8;//行坐标
+            int x = i % 8;//列坐标
+            mPaint.setStyle(Paint.Style.STROKE);
+            mPaint.setColor(0xff821AFA);
+            canvas.drawRoundRect(
+                    (Cons.BOX_WIDTH + OFFSET_X) * x, (Cons.BOX_HEIGHT + OFFSET_Y) * y,
+                    (Cons.BOX_WIDTH + OFFSET_X) * x + Cons.BOX_WIDTH, (Cons.BOX_HEIGHT + OFFSET_Y) * y + Cons.BOX_HEIGHT,
+                    BOX_RADIUS, BOX_RADIUS, mPaint);
+            mDataPaint.setColor(0xff821AFA);
+            canvas.drawText(i + "",
+                    (Cons.BOX_WIDTH + OFFSET_X) * x + Cons.BOX_WIDTH / 2,
+                    (Cons.BOX_HEIGHT + OFFSET_Y) * y + 3 * OFFSET_OF_INDEX_Y, mDataPaint);
+        }
+
     }
 
     /**
@@ -185,11 +223,9 @@ public class ArrayView<E> extends View {
             canvas.drawText(CTRL_TXT[i], CTRL_POS[i].x, CTRL_POS[i].y + OFFSET_OF_INDEX_Y, mDataPaint);
         }
 
+
     }
 
-
-    private float downX;
-    private float downY;
 
     @Override
 
@@ -197,40 +233,49 @@ public class ArrayView<E> extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                downX = event.getX() - mCoo.x;
-                downY = event.getY() - mCoo.y;
-                //插入区域判定
-                if (JudgeMan.judgeCircleArea(CTRL_POS[0].x, CTRL_POS[0].y, downX, downY, CTRL_RADIUS * 1.2f)) {
-                    if (mOnCtrlClickListener != null) {
-                        mOnCtrlClickListener.onAdd(this);
-                        CTRL_COLOR[0] = 0xff54E1F8;
+                float downX = event.getX() - mCoo.x;
+                float downY = event.getY() - mCoo.y;
 
-                    }
-                }
+                for (int i = 0; i < CTRL_POS.length; i++) {
+                    //区域判定
+                    if (JudgeMan.judgeCircleArea(CTRL_POS[i].x, CTRL_POS[i].y, downX, downY, CTRL_RADIUS * 1.2f)) {
+                        if (mOnCtrlClickListener != null) {
+                            switch (i) {
+                                case 0://插入尾部
+                                    mOnCtrlClickListener.onAdd(this);
+                                    break;
+                                case 1://更新
+//                                    mOnCtrlClickListener.onSet(this);
 
-                //更新区域判定
-                if (JudgeMan.judgeCircleArea(CTRL_POS[1].x, CTRL_POS[1].y, downX, downY, CTRL_RADIUS * 1.2f)) {
-                    if (mOnCtrlClickListener != null) {
-                        mOnCtrlClickListener.onSet(this);
-                        CTRL_COLOR[1] = 0xff54E1F8;
-                    }
-                }
+                                    IChart<ArrayBox<E>> contactArr = new ArrayChart<>();
+                                    contactArr.add(new ArrayBox<E>((E) "toly1"));
+                                    contactArr.add(new ArrayBox<E>((E) "toly2"));
+                                    contactArr.add(new ArrayBox<E>((E) "toly3"));
+                                    contactData(selectIndex, contactArr);
 
-                //查询区域判定
-                if (JudgeMan.judgeCircleArea(CTRL_POS[2].x, CTRL_POS[2].y, downX, downY, CTRL_RADIUS * 1.2f)) {
-                    if (mOnCtrlClickListener != null) {
-                        mOnCtrlClickListener.onFind(this);
-                        CTRL_COLOR[2] = 0xff54E1F8;
-
-                    }
-                }
-
-                //删除区域判定
-                if (JudgeMan.judgeCircleArea(CTRL_POS[3].x, CTRL_POS[3].y, downX, downY, CTRL_RADIUS * 1.2f)) {
-                    if (mOnCtrlClickListener != null) {
-                        mAnimator.start();
-                        mCurTime = System.currentTimeMillis();
-                        CTRL_COLOR[3] = 0xff54E1F8;
+                                    break;
+                                case 2://查找
+                                    mOnCtrlClickListener.onFind(this);
+                                    break;
+                                case 3://删除尾部
+                                    selectIndex = mArrayBoxes.size() - 1;
+                                    mAnimator.start();
+                                    break;
+                                case 4://定点添加尾部
+                                    mOnCtrlClickListener.onAddByIndex(this);
+                                    break;
+                                case 5://定值查询
+                                    mOnCtrlClickListener.onFindByData(this);
+                                    break;
+                                case 6://定点移除
+                                    mAnimator.start();
+                                    break;
+                                case 7://清空
+                                    mOnCtrlClickListener.onClear(this);
+                                    break;
+                            }
+                            CTRL_COLOR[i] = 0xff54E1F8;
+                        }
                     }
                 }
 
@@ -252,40 +297,42 @@ public class ArrayView<E> extends View {
                 CTRL_COLOR[1] = 0xff2992F2;
                 CTRL_COLOR[2] = 0xffB946F4;
                 CTRL_COLOR[3] = 0xffF50C0C;
+                CTRL_COLOR[4] = 0xff1EF519;
+                CTRL_COLOR[5] = 0xffB946F4;
+                CTRL_COLOR[6] = 0xffF50C0C;
+                CTRL_COLOR[7] = 0xffF46410;
                 break;
         }
         invalidate();
         return true;
     }
 
+    private void contactData(int index, IChart<ArrayBox<E>> chart) {
+
+
+        mArrayBoxes.contact(index, chart);
+        updatePosOfData();
+    }
+
     /**
      * 更新小球
      */
     private void updateBall() {
+        if (mArrayBoxes.size() <= 0) {
+            return;
+        }
+        L.d(selectIndex + L.l());
         ArrayBox ball = mArrayBoxes.get(selectIndex);
         ball.x += ball.vX;
         ball.y += ball.vY;
 
-        if (ball.y > 800) {
+        if (ball.y > 600) {
             if (mOnCtrlClickListener != null) {
                 mOnCtrlClickListener.onRemove(this);
                 mAnimator.pause();
             }
         }
 
-//        if (System.currentTimeMillis() - mCurTime > 2000) {
-//            if (mOnCtrlClickListener != null) {
-//                mOnCtrlClickListener.onRemove(this);
-//                mAnimator.pause();
-//            }
-//        }
-
-
-//        ArrayBox arrayBox = mArrayBoxes.get(index);
-//        arrayBox.x += arrayBox.vX;
-//        arrayBox.y += arrayBox.vY;
-//        L.d(index+L.l());
-//
     }
 
 
@@ -295,23 +342,14 @@ public class ArrayView<E> extends View {
      * @param data 数据
      */
     public void addData(E data) {
-        if (mArrayBoxes.isEmpty()) {
-            ArrayBox<E> arrayBox = new ArrayBox<>(0, 0);
-            arrayBox.index = 0;
-            arrayBox.data = data;
-            mArrayBoxes.add(arrayBox);
-        } else {
-            ArrayBox lastBox = mArrayBoxes.get(mArrayBoxes.size() - 1);
-            ArrayBox<E> arrayBox = new ArrayBox<>(0, 0);
-            arrayBox.index = lastBox.index + 1;
-            arrayBox.data = data;
-            mArrayBoxes.add(arrayBox);
-        }
+        ArrayBox<E> arrayBox = new ArrayBox<>(0, 0);
+        arrayBox.data = data;
+        mArrayBoxes.add(arrayBox);
         updatePosOfData();
     }
 
     public void removeData(int index) {
-        if (mArrayBoxes != null && index < mArrayBoxes.size() && index > 0) {
+        if (mArrayBoxes.size() > 0 && index < mArrayBoxes.size() && index > 0) {
             //更新后面的索引
             for (int i = index; i < mArrayBoxes.size(); i++) {
                 mArrayBoxes.get(i).index -= 1;
@@ -320,6 +358,14 @@ public class ArrayView<E> extends View {
             selectIndex = -1;
             updatePosOfData();
         }
+    }
+
+    public void removeData() {
+        if (mArrayBoxes.size() > 0) {
+            mArrayBoxes.remove();
+            updatePosOfData();
+        }
+
     }
 
     /**
@@ -345,19 +391,42 @@ public class ArrayView<E> extends View {
         return selectIndex;
     }
 
-    public void setSelectIndex(int selectIndex) {
-        this.selectIndex = selectIndex;
+    public E getSelectData() {
+        return mArrayBoxes.get(selectIndex).data;
     }
 
-
     public void setData(int index, E data) {
-        if (mArrayBoxes != null && index < mArrayBoxes.size() && index > 0) {
+        if (mArrayBoxes.size() > 0 && index < mArrayBoxes.size() && index >= 0) {
             mArrayBoxes.get(index).data = data;
             updatePosOfData();
         }
     }
 
     public E findData(int index) {
-        return mArrayBoxes.get(index).data;
+        if (mArrayBoxes.size() > 0 && index < mArrayBoxes.size() && index >= 0) {
+            return mArrayBoxes.get(index).data;
+        }
+
+        return null;
+    }
+
+    public int[] findData(E data) {
+        ArrayBox<E> arrayBox = new ArrayBox<>(0, 0);
+        arrayBox.data = data;
+        return mArrayBoxes.getIndex(arrayBox);
+
+    }
+
+    public void addData(int index, E data) {
+        if (mArrayBoxes != null && index < mArrayBoxes.size() && index >= 0) {
+            ArrayBox<E> arrayBox = new ArrayBox<>(0, 0);
+            arrayBox.data = data;
+            mArrayBoxes.add(index, arrayBox);
+            updatePosOfData();
+        }
+    }
+
+    public void clearData() {
+        mArrayBoxes.clear();
     }
 }

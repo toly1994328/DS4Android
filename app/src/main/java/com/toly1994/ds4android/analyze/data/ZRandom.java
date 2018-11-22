@@ -40,6 +40,9 @@ public class ZRandom {
             "玉", "宝", "智", "峰", "贵", "城", "强", "德", "美"};
     ;
 
+    public static String[] NAME_OF_3 = new String[]{
+            "捷特", "巫缨", "龙少"};
+
     /**
      * 给定字符串数组,返回随机个数字符串拼接
      *
@@ -68,6 +71,16 @@ public class ZRandom {
         String firstName = upAChar(rangeChar(4, abc));
         String lastName = upAChar(rangeChar(6, abc));
         return firstName + " " + lastName;
+    }
+
+    /**
+     * 获取随机英文名字
+     *
+     * @return 随机英文名字
+     */
+    public static String randomOf3Name() {
+
+        return NAME_OF_3[rangeInt(0, 2)];
     }
 
     /**
