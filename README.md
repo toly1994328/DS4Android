@@ -8,15 +8,15 @@
 
 
 ##### 0.本系列后续更新链接合集：(动态更新)
->[看得见的数据结构Android版之开篇前言](https://juejin.im/post/5bf52228e51d4542fc64d92f)  
-[看得见的数据结构Android版之表的数组实现(数据结构篇)](https://juejin.im/post/5bf626c5e51d450d5441721d)  
-看得见的数据结构Android版之表的数组实现(视图篇)  
-看得见的数据结构Android版之单链表篇(待完成)  
-看得见的数据结构Android版之双链表篇(待完成)   
-看得见的数据结构Android版之栈（待完成） 
-看得见的数据结构Android版之队列（待完成） 
-看得见的数据结构Android版之二叉树篇(待完成)   
-看得见的数据结构Android版之二分搜索树篇(待完成)   
+>[看得见的数据结构Android版之开篇前言](https://juejin.im/post/5bf52228e51d4542fc64d92f)    
+[看得见的数据结构Android版之表的数组实现(数据结构篇)](https://juejin.im/post/5bf626c5e51d450d5441721d)    
+看得见的数据结构Android版之表的数组实现(视图篇)    
+看得见的数据结构Android版之单链表篇(待完成)    
+看得见的数据结构Android版之双链表篇(待完成)     
+看得见的数据结构Android版之栈（待完成）   
+看得见的数据结构Android版之队列（待完成）   
+看得见的数据结构Android版之二叉树篇(待完成)     
+看得见的数据结构Android版之二分搜索树篇(待完成)     
 看得见的数据结构Android版之AVL树篇(待完成)   
 看得见的数据结构Android版之红黑树篇(待完成)   
 更多数据结构---以后再说吧  
