@@ -149,6 +149,8 @@ public class SingleView4Test extends View {
         mPath.rLineTo(-Cons.LINK_LEN - Cons.ARROW_DX, 0);
         mPath.rLineTo(Cons.ARROW_DX, Cons.ARROW_DX);
         canvas.drawPath(mPath, mPathPaint);
+
+
         //绘制文字没什么好说的
         canvas.drawText("0",
                 Cons.BOX_WIDTH / 2,
@@ -171,6 +173,8 @@ public class SingleView4Test extends View {
         mPath.rLineTo(0, Cons.BOX_HEIGHT / 2f);//往下画线走半高
         mPath.rLineTo(Cons.LINK_LEN, 0);//往左画线走线长
         mPath.rLineTo(-Cons.ARROW_DX, -Cons.ARROW_DX);//画箭头
+
+
         canvas.drawPath(mPath, mPathPaint);
         //绘制文字没什么好说的
         canvas.drawText("0", Cons.BOX_WIDTH / 2, 3 * 10, mDataPaint);

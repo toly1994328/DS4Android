@@ -15,6 +15,7 @@ public class Viewable {
     public float vY;//单体的数值速度
 
     public Viewable() {
+
     }
 
     public Viewable(float x, float y) {
