@@ -26,7 +26,7 @@ import com.toly1994.ds4android.model.ArrayBox;
  * 作者：张风捷特烈<br/>
  * 时间：2018/11/21 0021:8:01<br/>
  * 邮箱：1981462002@qq.com<br/>
- * 说明：
+ * 说明：数组实现表结构---测试视图
  */
 public class ArrayView<E> extends View {
     private Point mCoo = new Point(200, 150);//坐标系

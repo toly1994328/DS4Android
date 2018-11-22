@@ -167,7 +167,6 @@ public class ArrayChart<T> implements IChart<T> {
         if (!(iChart instanceof ArrayChart)) {//必须是数组才能联合
             return null;
         }
-
         //从index处遍历本数组，将待插入数据一个一个插入
         for (int i = index; i < index + iChart.size(); i++) {
             add(i + 1, iChart.get(i - index));
@@ -189,7 +188,6 @@ public class ArrayChart<T> implements IChart<T> {
     public int capacity() {
         if (data != null) {
             return data.length;
-
         }
         return 0;
     }
