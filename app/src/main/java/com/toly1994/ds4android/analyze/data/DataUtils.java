@@ -3,6 +3,8 @@ package com.toly1994.ds4android.analyze.data;
 import android.content.Context;
 import android.widget.TextView;
 
+import com.toly1994.ds4android.analyze.gold12.ZRandom;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;

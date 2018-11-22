@@ -1,4 +1,4 @@
-package com.toly1994.ds4android.analyze;
+package com.toly1994.ds4android.analyze.gold12;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,11 +10,14 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.support.annotation.NonNull;
 
+import com.toly1994.ds4android.analyze.HelpPath;
+import com.toly1994.ds4android.analyze.Utils;
+
 /**
  * 作者：张风捷特烈<br/>
  * 时间：2018/11/5 0005:8:43<br/>
  * 邮箱：1981462002@qq.com<br/>
- * 说明：辅助画布
+ * 说明：美丽之神----捷特麾下十二战神之一,负责颜值担当
  */
 public class HelpDraw {
 
@@ -56,10 +59,15 @@ public class HelpDraw {
     /**
      * 绘制坐标系
      */
-    public static Picture getCoo(Context context, Point coo) {
-        return getCoo(coo, getWinSize(context));
+    public static Picture getCoo(Context context, Point coo,boolean showText) {
+        return getCoo(coo, getWinSize(context),showText);
     }
-
+    /**
+     * 绘制坐标系:默认绘制文字
+     */
+    public static Picture getCoo(Context context, Point coo) {
+        return getCoo(coo, getWinSize(context),true);
+    }
 
     /**
      * 绘制网格
@@ -161,8 +169,9 @@ public class HelpDraw {
      *
      * @param coo     坐标系原点
      * @param winSize 屏幕尺寸
+     * @param winSize 屏幕尺寸
      */
-    private static Picture getCoo(Point coo, Point winSize) {
+    private static Picture getCoo(Point coo, Point winSize, boolean showText) {
         Picture picture = new Picture();
         Canvas recording = picture.beginRecording(winSize.x, winSize.y);
         //初始化网格画笔
@@ -182,7 +191,9 @@ public class HelpDraw {
         recording.drawLine(coo.x, winSize.y, coo.x - 20, winSize.y - 40, paint);
         recording.drawLine(coo.x, winSize.y, coo.x + 20, winSize.y - 40, paint);
         //为坐标系绘制文字
-//        drawText4Coo(recording, coo, winSize, paint);
+        if (showText) {
+            drawText4Coo(recording, coo, winSize, paint);
+        }
         return picture;
     }
 

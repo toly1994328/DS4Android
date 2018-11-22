@@ -4,13 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.toly1994.ds4android.analyze.data.ZRandom;
+import com.toly1994.ds4android.analyze.gold12.ZRandom;
 import com.toly1994.ds4android.view.ArrayView;
 import com.toly1994.ds4android.view.OnCtrlClickListener;
 
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity {
+public class ArrayChartActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,13 +20,13 @@ public class MainActivity extends AppCompatActivity {
         view.setOnCtrlClickListener(new OnCtrlClickListener<ArrayView<String>>() {
             @Override
             public void onAdd(ArrayView<String> view) {
-//                view.addData(ZRandom.randomOf3Name());
+//                view.addDataById(ZRandom.randomOf3Name());
                 view.addData(ZRandom.randomCnName());
             }
 
             @Override
             public void onAddByIndex(ArrayView<String> view) {
-                view.addData(view.getSelectIndex(), ZRandom.randomCnName());
+                view.addDataById(view.getSelectIndex(), ZRandom.randomCnName());
             }
 
             @Override
@@ -48,19 +48,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFind(ArrayView<String> view) {
                 String data = view.findData(view.getSelectIndex());
-                Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ArrayChartActivity.this, data, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFindByData(ArrayView<String> view) {
                 int[] data = view.findData(view.getSelectData());
-                Toast.makeText(MainActivity.this, Arrays.toString(data), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ArrayChartActivity.this, Arrays.toString(data), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onClear(ArrayView<String> view) {
                 view.clearData();
             }
+
+
 
         });
 

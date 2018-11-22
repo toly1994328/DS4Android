@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.toly1994.ds4android.analyze.HelpDraw;
+import com.toly1994.ds4android.analyze.gold12.HelpDraw;
 
 /**
  * 作者：张风捷特烈<br/>
@@ -64,7 +64,7 @@ public class SingleView4Test extends View {
 
         //初始化辅助
         mHelpPint = HelpDraw.getHelpPint(Color.RED);
-        mCooPicture = HelpDraw.getCoo(getContext(), mCoo);
+        mCooPicture = HelpDraw.getCoo(getContext(), mCoo,false);
         mGridPicture = HelpDraw.getGrid(getContext());
     }
 

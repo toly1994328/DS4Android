@@ -1,10 +1,10 @@
-package com.toly1994.ds4android.analyze.data;
+package com.toly1994.ds4android.analyze.gold12;
 
 /**
  * 作者：张风捷特烈<br/>
  * 时间：2018/8/27 0027:12:37<br/>
  * 邮箱：1981462002@qq.com<br/>
- * 说明：随机类拓展
+ * 说明：混沌之神----捷特麾下十二战神之一,负责产生一切的不确定情景
  */
 public class ZRandom {
     /**
