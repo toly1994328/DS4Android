@@ -34,8 +34,7 @@
 
 >单链表
 
-![单链表.gif](https://upload-images.jianshu.io/upload_images/9414344-620fbc5eaa7c5cc7.gif?imageMogr2/auto-orient/strip)
-
+![单链表操作合集.gif](https://upload-images.jianshu.io/upload_images/9414344-d4b27f8f2eda6157.gif?imageMogr2/auto-orient/strip)
 
 ##### 3.总体的思路
 

@@ -17,11 +17,12 @@ public class SingleLinkedChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SingleLinkedView<String> view = new SingleLinkedView<>(this);
 
+
         view.setOnCtrlClickListener(new OnCtrlClickListener<SingleLinkedView<String>>() {
             @Override
             public void onAdd(SingleLinkedView<String> view) {
-//                view.addDataById(ZRandom.randomOf3Name());
-                view.addData(ZRandom.randomCnName());
+                view.addData(ZRandom.randomOf3Name());
+//                view.addData(ZRandom.randomCnName());
             }
 
             @Override

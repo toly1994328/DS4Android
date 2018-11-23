@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.toly1994.ds4android.analyze.ColUtils;
+import com.toly1994.ds4android.analyze.L;
 import com.toly1994.ds4android.analyze.gold12.HelpDraw;
 import com.toly1994.ds4android.analyze.gold12.JudgeMan;
 import com.toly1994.ds4android.ds.impl.ArrayChart;
@@ -29,7 +30,7 @@ import com.toly1994.ds4android.model.SingleNode;
  * 说明：数组实现表结构---测试视图
  */
 public class SingleLinkedView<E> extends View {
-    private Point mCoo = new Point(200, 150);//坐标系
+    private Point mCoo = new Point(200, 200);//坐标系
     private Picture mCooPicture;//坐标系canvas元件
     private Picture mGridPicture;//网格canvas元件
 
@@ -254,21 +255,22 @@ public class SingleLinkedView<E> extends View {
                                     }
                                     break;
                                 case 1://更新
+
                                     mOnCtrlClickListener.onSet(this);
 //                                    contactTest();
                                     break;
                                 case 2://查找
                                     mOnCtrlClickListener.onFind(this);
                                     break;
-                                case 3://删除尾部
+                                case 3://删除首部
                                     if (selectIndex > 0) {//如果有选中的颜色，先复原
                                         mArrayBoxes.get(selectIndex).color = 0xff43A3FA;
                                     }
-                                    selectIndex = mArrayBoxes.size() - 1;
+                                    selectIndex = 0;
                                     mAnimator.start();
                                     break;
                                 case 4://定点添加
-                                    if (selectIndex > 0) {
+                                    if (selectIndex >= 0) {
                                         mArrayBoxes.get(selectIndex).color = 0xff43A3FA;
                                         mOnCtrlClickListener.onAddByIndex(this);
                                         selectIndex = -1;
@@ -342,19 +344,20 @@ public class SingleLinkedView<E> extends View {
      * 更新小球
      */
     private void updateBall() {
-        if (mArrayBoxes.size() <= 0 && selectIndex < 0) {
-            return;
-        }
-        SingleNode ball = mArrayBoxes.get(selectIndex);
-        ball.x += ball.vX;
-        ball.y += ball.vY;
+        if (mArrayBoxes.size() > 0 && selectIndex != -1) {
+            L.d(selectIndex + L.l());
+            SingleNode ball = mArrayBoxes.get(selectIndex);
+            ball.x += ball.vX;
+            ball.y += ball.vY;
 
-        if (ball.y > 600) {
-            if (mOnCtrlClickListener != null) {
-                mOnCtrlClickListener.onRemoveByIndex(this);//移除监听放在这里了!!
-                mAnimator.pause();
+            if (ball.y > 600) {
+                if (mOnCtrlClickListener != null) {
+                    mOnCtrlClickListener.onRemoveByIndex(this);//移除监听放在这里了!!
+                    mAnimator.pause();
+                }
             }
         }
+
     }
 
 
@@ -377,6 +380,7 @@ public class SingleLinkedView<E> extends View {
      * @param data  数据
      */
     public void addDataById(int index, E data) {
+        L.d("addDataById：" + index + L.l());
         if (mArrayBoxes.size() > 0 && index < mArrayBoxes.size() && index >= 0) {
             SingleNode<E> SingleNode = new SingleNode<>(0, 0);
             SingleNode.data = data;
@@ -489,7 +493,10 @@ public class SingleLinkedView<E> extends View {
      * @return
      */
     public E getSelectData() {
-        return mArrayBoxes.get(selectIndex).data;
+        if (selectIndex >= 0) {
+            return mArrayBoxes.get(selectIndex).data;
+        }
+        return null;
     }
 
 

@@ -481,7 +481,10 @@ public class ArrayView<E> extends View {
      * @return
      */
     public E getSelectData() {
-        return mArrayBoxes.get(selectIndex).data;
+        if (selectIndex >= 0) {
+            return mArrayBoxes.get(selectIndex).data;
+        }
+        return null;
     }
 
 
