@@ -140,6 +140,7 @@ public class SingleView4Test extends View {
                 Cons.BOX_WIDTH / 2, Cons.BOX_HEIGHT / 2,
                 Cons.BOX_WIDTH / 2, Cons.BOX_HEIGHT / 2,
                 Cons.BOX_WIDTH, 0);
+
         mPath.lineTo(Cons.BOX_WIDTH, Cons.BOX_HEIGHT / 2.2f);
         mPath.rLineTo(Cons.LINK_LEN, 0);
         mPath.rLineTo(-Cons.ARROW_DX, -Cons.ARROW_DX);

@@ -18,17 +18,17 @@ import com.toly1994.ds4android.analyze.ColUtils;
 import com.toly1994.ds4android.analyze.L;
 import com.toly1994.ds4android.analyze.gold12.HelpDraw;
 import com.toly1994.ds4android.analyze.gold12.JudgeMan;
-import com.toly1994.ds4android.ds.impl.SingleLinkedChart;
+import com.toly1994.ds4android.ds.impl.LinkedChart;
 import com.toly1994.ds4android.ds.itf.IChart;
-import com.toly1994.ds4android.model.SingleNode;
+import com.toly1994.ds4android.model.LinkedNode;
 
 /**
  * 作者：张风捷特烈<br/>
  * 时间：2018/11/21 0021:8:01<br/>
  * 邮箱：1981462002@qq.com<br/>
- * 说明：单链表实现表结构---测试视图
+ * 说明：双链表实现表结构---测试视图
  */
-public class SingleLinkedView<E> extends View {
+public class LinkedView<E> extends View {
     private Point mCoo = new Point(200, 200);//坐标系
     private Picture mCooPicture;//坐标系canvas元件
     private Picture mGridPicture;//网格canvas元件
@@ -40,16 +40,16 @@ public class SingleLinkedView<E> extends View {
     private Paint mPathPaint;//路径画笔
     private Paint mCtrlPaint;//几个圆的画笔
 
-    private IChart<SingleNode<E>> mArrayBoxes = new SingleLinkedChart<>();
-    private OnCtrlClickListener<SingleLinkedView<E>> mOnCtrlClickListener;
+    private IChart<LinkedNode<E>> mArrayBoxes = new LinkedChart<>();
+    private OnCtrlClickListener<LinkedView<E>> mOnCtrlClickListener;
     private int selectIndex = -1;//当前选中的索引
     private ValueAnimator mAnimator;
 
 
     private static final int OFFSET_X = 100;//X空隙
-    private static final int OFFSET_Y = 200;//Y空隙
+    private static final int OFFSET_Y = 250;//Y空隙
     private static final int OFFSET_OF_TXT_Y = 10;//文字的偏移
-    private static final int LINE_ITEM_NUM = 6;//每行的单体个数
+    private static final int LINE_ITEM_NUM = 5;//每行的单体个数
 
     private static final int BOX_RADIUS = 10;//数组盒子的圆角
 
@@ -92,15 +92,15 @@ public class SingleLinkedView<E> extends View {
     private static final int CTRL_RADIUS = 50;//控制按钮的半径
 
 
-    public void setOnCtrlClickListener(OnCtrlClickListener<SingleLinkedView<E>> onCtrlClickListener) {
+    public void setOnCtrlClickListener(OnCtrlClickListener<LinkedView<E>> onCtrlClickListener) {
         mOnCtrlClickListener = onCtrlClickListener;
     }
 
-    public SingleLinkedView(Context context) {
+    public LinkedView(Context context) {
         this(context, null);
     }
 
-    public SingleLinkedView(Context context, @Nullable AttributeSet attrs) {
+    public LinkedView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();//初始化
     }
@@ -169,7 +169,7 @@ public class SingleLinkedView<E> extends View {
         mPaint.setStyle(Paint.Style.FILL);
         mPath.reset();
         for (int i = 0; i < mArrayBoxes.size(); i++) {
-            SingleNode box = mArrayBoxes.get(i);
+            LinkedNode box = mArrayBoxes.get(i);
 
             mPaint.setColor(box.color);
             canvas.drawRoundRect(
@@ -180,18 +180,28 @@ public class SingleLinkedView<E> extends View {
             mPath.rCubicTo(Cons.BOX_WIDTH / 2, Cons.BOX_HEIGHT / 2,
                     Cons.BOX_WIDTH / 2, Cons.BOX_HEIGHT / 2, Cons.BOX_WIDTH, 0);
 
-            if (i < mArrayBoxes.size() - 1) {
-                SingleNode box_next = mArrayBoxes.get(i + 1);
+            if (i < mArrayBoxes.size() - 1 ) {
+                LinkedNode box_next = mArrayBoxes.get(i + 1);
+                LinkedNode box_now = mArrayBoxes.get(i);
 
-                if (i % 6 == 6 - 1) {//边界情况
+                if (i % LINE_ITEM_NUM == LINE_ITEM_NUM - 1) {//边界情况
                     mPath.rLineTo(0, Cons.BOX_HEIGHT);
-                    mPath.rLineTo(-Cons.BOX_WIDTH / 2, 0);
-                    mPath.lineTo(box_next.x + Cons.BOX_WIDTH / 2f, box_next.y);
+                    mPath.lineTo(box_next.x + Cons.BOX_WIDTH, box_next.y);
                     mPath.rLineTo(Cons.ARROW_DX, -Cons.ARROW_DX);
+
+                    mPath.moveTo(box_next.x, box_next.y);
+                    mPath.lineTo(box_now.x, box_now.y+Cons.BOX_HEIGHT);
+                    mPath.rLineTo(-Cons.ARROW_DX, Cons.ARROW_DX);
+
                 } else {
-                    mPath.rLineTo(0, Cons.BOX_HEIGHT / 2f);
-                    mPath.lineTo(box_next.x, box_next.y + Cons.BOX_HEIGHT / 2f);
+                    mPath.rLineTo(0, Cons.BOX_HEIGHT / 2.2f);
+                    mPath.lineTo(box_next.x+Cons.BOX_WIDTH * 0.2f, box_next.y + Cons.BOX_HEIGHT / 2f);
                     mPath.rLineTo(-Cons.ARROW_DX, -Cons.ARROW_DX);
+
+                    mPath.moveTo(box_next.x, box_next.y);
+                    mPath.rLineTo(0, Cons.BOX_HEIGHT / 1.2f);
+                    mPath.lineTo(box_now.x + Cons.BOX_WIDTH * 0.8f, box_now.y + Cons.BOX_HEIGHT * 0.8f);
+                    mPath.rLineTo(Cons.ARROW_DX, Cons.ARROW_DX);
                 }
             }
             canvas.drawPath(mPath, mPathPaint);
@@ -259,11 +269,11 @@ public class SingleLinkedView<E> extends View {
                                 case 2://查找
                                     mOnCtrlClickListener.onFind(this);
                                     break;
-                                case 3://删除首部
+                                case 3://删除尾部
                                     if (selectIndex > 0) {//如果有选中的颜色，先复原
                                         mArrayBoxes.get(selectIndex).color = 0xff43A3FA;
                                     }
-                                    selectIndex = 0;
+                                    selectIndex = mArrayBoxes.size() - 1;
                                     mAnimator.start();
                                     break;
                                 case 4://定点添加
@@ -323,13 +333,14 @@ public class SingleLinkedView<E> extends View {
             }
         }
     }
+
     /**
      * 更新小球
      */
     private void updateBall() {
         if (mArrayBoxes.size() > 0 && selectIndex != -1) {
             L.d(selectIndex + L.l());
-            SingleNode ball = mArrayBoxes.get(selectIndex);
+            LinkedNode ball = mArrayBoxes.get(selectIndex);
             ball.x += ball.vX;
             ball.y += ball.vY;
 
@@ -350,9 +361,9 @@ public class SingleLinkedView<E> extends View {
      * @param data 数据
      */
     public void addData(E data) {
-        SingleNode<E> SingleNode = new SingleNode<>(0, 0);
-        SingleNode.data = data;
-        mArrayBoxes.add(SingleNode);
+        LinkedNode<E> LinkedNode = new LinkedNode<>(0, 0);
+        LinkedNode.data = data;
+        mArrayBoxes.add(LinkedNode);
         updatePosOfData();
     }
 
@@ -365,9 +376,9 @@ public class SingleLinkedView<E> extends View {
     public void addDataById(int index, E data) {
         L.d("addDataById：" + index + L.l());
         if (mArrayBoxes.size() > 0 && index < mArrayBoxes.size() && index >= 0) {
-            SingleNode<E> SingleNode = new SingleNode<>(0, 0);
-            SingleNode.data = data;
-            mArrayBoxes.add(index, SingleNode);
+            LinkedNode<E> LinkedNode = new LinkedNode<>(0, 0);
+            LinkedNode.data = data;
+            mArrayBoxes.add(index, LinkedNode);
             updatePosOfData();
         }
     }
@@ -393,9 +404,12 @@ public class SingleLinkedView<E> extends View {
      * @return
      */
     public int[] findData(E data) {
-        SingleNode<E> SingleNode = new SingleNode<>(0, 0);
-        SingleNode.data = data;
-        return mArrayBoxes.getIndex(SingleNode);
+        if (selectIndex != -1) {
+            LinkedNode<E> LinkedNode = new LinkedNode<>(0, 0);
+            LinkedNode.data = data;
+            return mArrayBoxes.getIndex(LinkedNode);
+        }
+        return null;
     }
 
     /**
@@ -452,7 +466,7 @@ public class SingleLinkedView<E> extends View {
             int y = i / LINE_ITEM_NUM;//行坐标
             int x = i % LINE_ITEM_NUM;//列坐标
 
-            SingleNode box = mArrayBoxes.get(i);
+            LinkedNode box = mArrayBoxes.get(i);
             box.x = (Cons.BOX_WIDTH + OFFSET_X) * x;
             box.y = (Cons.BOX_HEIGHT + OFFSET_Y) * y;
             box.index = i;

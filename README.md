@@ -36,6 +36,11 @@
 
 ![单链表操作合集.gif](https://upload-images.jianshu.io/upload_images/9414344-d4b27f8f2eda6157.gif?imageMogr2/auto-orient/strip)
 
+
+>双链表:
+
+![双链表操作合集.gif](https://upload-images.jianshu.io/upload_images/9414344-b9130b82af8767fb.gif?imageMogr2/auto-orient/strip)
+
 ##### 3.总体的思路
 
 ![综述.png](https://upload-images.jianshu.io/upload_images/9414344-99a900ad5ffc4ac5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
