@@ -1,4 +1,4 @@
-package com.toly1994.ds4android.ds.impl;
+package com.toly1994.ds4android.ds.impl.chart;
 
 import com.toly1994.ds4android.ds.itf.IChart;
 

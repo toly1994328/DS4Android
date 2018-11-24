@@ -1,4 +1,4 @@
-package com.toly1994.ds4android.view;
+package com.toly1994.ds4android.view.other;
 
 import android.content.Context;
 import android.graphics.Canvas;

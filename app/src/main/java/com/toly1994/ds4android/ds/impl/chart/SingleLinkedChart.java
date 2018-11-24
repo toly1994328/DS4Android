@@ -1,4 +1,4 @@
-package com.toly1994.ds4android.ds.impl;
+package com.toly1994.ds4android.ds.impl.chart;
 
 import com.toly1994.ds4android.ds.itf.IChart;
 
@@ -8,14 +8,18 @@ import com.toly1994.ds4android.ds.itf.IChart;
  * 邮箱：1981462002@qq.com<br/>
  * 说明：单链表实现表结构
  */
-public class LinkedChart<T> implements IChart<T> {
+public class SingleLinkedChart<T> implements IChart<T> {
 
-    private Node headNode;//虚拟尾节点--相当于头部火车头
-    private Node tailNode;//虚拟尾节点--相当于尾部火车头
+    /**
+     * 虚拟头结点
+     */
+    private Node headNode;
+
     protected int size;
 
-    public LinkedChart() {
-        clearOrInitNode();
+    public SingleLinkedChart() {
+        headNode = new Node(null, null);
+        size = 0;
     }
 
 
@@ -25,14 +29,14 @@ public class LinkedChart<T> implements IChart<T> {
         if (index < 0 || index > size) {
             throw new IllegalArgumentException("Add failed. Illegal index");
         }
-        addNode(getNode(index), el);
+        addNode(index + 1, el);
         //为了接口规范,计数从0开始,而链表没有索引概念，只是第几个,T0被认为是第一节车厢。
         //比如选中点2---说明是第三节车厢，所以index + 1 =2+1
     }
 
     @Override
     public void add(T el) {
-        add(size, el);
+        add(0, el);
     }
 
     @Override
@@ -40,12 +44,12 @@ public class LinkedChart<T> implements IChart<T> {
         if (index < 0 || index > size) {
             throw new IllegalArgumentException("Remove failed. Illegal index");
         }
-        return removeNode(getNode(index));
+        return removeNode(index + 1);
     }
 
     @Override
     public T remove() {
-        return remove(size);
+        return remove(0);
     }
 
     @Override
@@ -73,7 +77,8 @@ public class LinkedChart<T> implements IChart<T> {
 
     @Override
     public void clear() {
-        clearOrInitNode();
+        headNode = new Node(null, null);
+        size = 0;
     }
 
     @Override
@@ -81,10 +86,7 @@ public class LinkedChart<T> implements IChart<T> {
         if (index < 0 || index > size) {
             throw new IllegalArgumentException("ISet failed. Illegal index");
         }
-        Node node = getNode(index);
-        T oldData = node.el;
-        node.el = el;
-        return oldData;
+        return setNode(index, el).el;
     }
 
     @Override
@@ -92,7 +94,7 @@ public class LinkedChart<T> implements IChart<T> {
         if (index < 0 || index > size) {
             throw new IllegalArgumentException("Get failed. Illegal index");
         }
-        return getNode(index).el;
+        return getNode(index + 1).el;
     }
 
     @Override
@@ -101,7 +103,7 @@ public class LinkedChart<T> implements IChart<T> {
         int index = 0;//重复个数
         int count = 0;
         Node node = headNode.next;
-        while (node.next != null) {
+        while (node != null) {
             if (el.equals(node.el)) {
                 tempArray[index] = -1;
                 count++;
@@ -132,6 +134,39 @@ public class LinkedChart<T> implements IChart<T> {
         return false;
     }
 
+    /////////////////只是实现一下，getHeadNode和getLastNode破坏了Node的封装性///////////////
+    @Override
+    public IChart<T> contact(IChart<T> iChart) {
+        return contact(0, iChart);
+    }
+
+    @Override
+    public IChart<T> contact(int index, IChart<T> iChart) {
+        if (!(iChart instanceof SingleLinkedChart)) {
+            return null;
+        }
+        if (index < 0 || index > size) {
+            throw new IllegalArgumentException("Contact failed. Illegal index");
+        }
+        SingleLinkedChart<T> linkedGroup = (SingleLinkedChart<T>) iChart;
+        Node firstNode = linkedGroup.getHeadNode().next;//接入链表 头结点
+        Node lastNode = linkedGroup.getLastNode();//接入链表 尾结点
+        Node target = getNode(index + 1);//获取目标节点
+        Node targetNext = target.next;//获取目标节点的下一节点
+        target.next = firstNode;//获取目标节点的next连到 接入链表 头结点
+        lastNode.next = targetNext; //待接入链表 尾结点连到 目标节点的下一节点
+        return this;
+    }
+
+    public Node getHeadNode() {
+        return headNode;
+    }
+
+    public Node getLastNode() {
+        return getNode(size);
+    }
+
+    ///////////////////////////////////////////////////////////////
     @Override
     public boolean isEmpty() {
         return size == 0;
@@ -147,68 +182,22 @@ public class LinkedChart<T> implements IChart<T> {
         return size;
     }
 
-//region ----------只是实现一下，getHeadNode和getLastNode破坏了Node的封装性---------------
 
-
-    @Override
-    public IChart<T> contact(IChart<T> iChart) {
-        return contact(0, iChart);
-    }
-
-    @Override
-    public IChart<T> contact(int index, IChart<T> iChart) {
-        if (!(iChart instanceof LinkedChart)) {
-            return null;
-        }
-        if (index < 0 || index > size) {
-            throw new IllegalArgumentException("Contact failed. Illegal index");
-        }
-        LinkedChart linkedGroup = (LinkedChart) iChart;
-        Node targetNode = getNode(index);
-        Node targetNextNode = targetNode.next;
-        //目标节点的next指向待接链表的第一个节点
-        targetNode.next = linkedGroup.getHeadNode().next;
-        //向待接链表的第一个节点的prev指向目标节点
-        linkedGroup.getHeadNode().next.prev = targetNode;
-        //目标节点的下一节点指的prev向待接链表的最后一个节点
-        targetNextNode.prev = linkedGroup.getLastNode().prev;
-        //向待接链表的最后一个节点的next指向目标节点的下一节点的
-        linkedGroup.getLastNode().prev.next = targetNextNode;
-        return this;
-    }
-
-    public Node getHeadNode() {
-        return headNode;
-    }
-
-    public Node getLastNode() {
-        return tailNode;
-    }
-    //endregion
-
-
-
-//region -----------内部私有节点类--------------
-
-
-
+    /**
+     * 内部私有节点类
+     */
     private class Node {
         /**
-         * 数据
+         * 节点数据元素
          */
         private T el;
         /**
-         * 前节点
-         */
-        private Node prev;
-        /**
-         * 后节点
+         * 下一节点的引用
          */
         private Node next;
 
-        private Node(Node prev, Node next, T el) {
+        private Node(Node next, T el) {
             this.el = el;
-            this.prev = prev;
             this.next = next;
         }
     }
@@ -216,38 +205,38 @@ public class LinkedChart<T> implements IChart<T> {
     ////////////////////------------节点操作
 
     /**
-     * 根据目标节点插入新节点--目标节点之前
+     * 在指定链表前添加节点
      *
-     * @param target 目标节点
-     * @param el     新节点数据
+     * @param index 索引
+     * @param el    数据
      */
-    private void addNode(Node target, T el) {
-        //新建一个node,将前、后指向分别指向目标前节点和目标节点
-        Node newNode = new Node(target.prev, target, el);
-        //目标前节点next指向新节点
-        target.prev.next = newNode;
-        //目标节点prev指向新节点
-        target.prev = newNode;
-        //链表长度+1
+    private void addNode(int index, T el) {
+        Node preTarget = getNode(index - 1);//获取前一节车厢
+        //新建节点,同时下一节点指向target的下一节点--
+        //这里有点绕,分析一下:例子：2号车厢和1号车厢之间插入一节T4车厢
+        //preTarget：1号车厢   preTarget.next：2号车厢
+        //T4车厢:new Node(preTarget.next, el)---创建时就把链子拴在了：2号车厢（preTarget.next）
+        Node tNode = new Node(preTarget.next, el);
+        //preTarget的next指向tNode--- 1号车厢栓到T4车厢
+        preTarget.next = tNode;
         size++;
     }
 
     /**
-     * 移除目标节点
+     * 移除指定索引的节点
      *
-     * @param target 目标节点
-     * @return 目标节点数据
+     * @param index 索引
+     * @return 删除的元素
      */
-    private T removeNode(Node target) {
-        //目标前节点的next指向目标节点后节点
-        target.prev.next = target.next;
-        //目标后节点的prev指向目标节点前节点
-        target.next.prev = target.prev;
-        //链表长度-1
+    private T removeNode(int index) {
+        Node preTarget = getNode(index - 1);//获取前一节车厢
+        Node target = preTarget.next;//目标车厢
+        //前一节车厢的next指向目标车厢下一节点
+        preTarget.next = target.next;//T0和T2手拉手
+        target.next = null;//T1把自己的链子拿掉,伤心地走开...
         size--;
         return target.el;
     }
-
 
     /**
      * 修改节点
@@ -269,39 +258,16 @@ public class LinkedChart<T> implements IChart<T> {
      * @return 节点
      */
     private Node getNode(int index) {
-        //索引越界处理
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException();
-        }
+//        if (index == 0) {
+//
+//        }
 
         //声明目标节点
-        Node targetNode;
-        //如果索引在前半,前序查找
-        if (index < size / 2) {
-            targetNode = headNode.next;
-            for (int i = 0; i < index; i++) {
-                targetNode = targetNode.next;
-            }
-        } else {  //如果索引在后半,反序查找
-            targetNode = tailNode;
-            for (int i = size; i > index; i--) {
-                targetNode = targetNode.prev;
-            }
+        Node targetNode = headNode;
+        for (int i = 0; i < index; i++) {
+            //一个挨着一个找，直到index
+            targetNode = targetNode.next;
         }
         return targetNode;
     }
-
-    /**
-     * 清空所有节点
-     */
-    private void clearOrInitNode() {
-        //实例化头结点
-        headNode = new Node(null, null, null);
-        //实例化尾节点，并将prev指向头
-        tailNode = new Node(headNode, null, null);
-        headNode.next = tailNode;
-        //链表长度置零
-        size = 0;
-    }
-//endregion
 }

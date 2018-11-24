@@ -15,6 +15,13 @@ public class ZRandom {
             "h", "i", "j", "k", "l", "m", "n",
             "o", "p", "q", "r", "s", "t", "u",
             "v", "w", "x", "y", "z"};
+
+    /**
+     * 小写字母集
+     */
+    public static String[] KUO_HAO = new String[]{
+            "{", "}", "[", "]", "(", ")", "<", ">"};
+
     /**
      * 大写字母集
      */
@@ -59,6 +66,17 @@ public class ZRandom {
             sb.append(chars[rangeInt(0, chars.length - 1)]);
         }
         return sb.toString();
+    }
+
+
+    /**
+     * 给定字符串数组,返回1个数字符串
+     *
+     * @param chars 字符串数组
+     * @return 随机个数字符串拼接
+     */
+    public static String rangeChar(String[] chars) {
+        return chars[rangeInt(0, chars.length-1)];
     }
 
 

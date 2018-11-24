@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.toly1994.ds4android.analyze.gold12.ZRandom;
 import com.toly1994.ds4android.view.ArrayView;
-import com.toly1994.ds4android.view.OnCtrlClickListener;
+import com.toly1994.ds4android.view.other.OnCtrlClickListener;
 
 import java.util.Arrays;
 

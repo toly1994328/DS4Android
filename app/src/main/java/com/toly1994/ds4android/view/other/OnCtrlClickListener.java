@@ -1,4 +1,4 @@
-package com.toly1994.ds4android.view;
+package com.toly1994.ds4android.view.other;
 
 /**
  * 作者：张风捷特烈<br/>

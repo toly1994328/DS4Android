@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.toly1994.ds4android.analyze.gold12.ZRandom;
-import com.toly1994.ds4android.view.OnCtrlClickListener;
+import com.toly1994.ds4android.view.other.OnCtrlClickListener;
 import com.toly1994.ds4android.view.LinkedView;
 
 import java.util.Arrays;
@@ -21,8 +21,8 @@ public class LinkedChartActivity extends AppCompatActivity {
         view.setOnCtrlClickListener(new OnCtrlClickListener<LinkedView<String>>() {
             @Override
             public void onAdd(LinkedView<String> view) {
-//                view.addData(ZRandom.randomOf3Name());
-                view.addData(ZRandom.randomCnName());
+                view.addData(ZRandom.randomOf3Name());
+//                view.addData(ZRandom.randomCnName());
             }
 
             @Override

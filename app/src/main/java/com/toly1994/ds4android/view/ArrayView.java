@@ -17,9 +17,11 @@ import android.view.animation.LinearInterpolator;
 import com.toly1994.ds4android.analyze.ColUtils;
 import com.toly1994.ds4android.analyze.gold12.HelpDraw;
 import com.toly1994.ds4android.analyze.gold12.JudgeMan;
-import com.toly1994.ds4android.ds.impl.ArrayChart;
+import com.toly1994.ds4android.ds.impl.chart.ArrayChart;
 import com.toly1994.ds4android.ds.itf.IChart;
 import com.toly1994.ds4android.model.ArrayBox;
+import com.toly1994.ds4android.view.other.Cons;
+import com.toly1994.ds4android.view.other.OnCtrlClickListener;
 
 /**
  * 作者：张风捷特烈<br/>

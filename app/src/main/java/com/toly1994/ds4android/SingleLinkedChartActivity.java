@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.toly1994.ds4android.analyze.gold12.ZRandom;
-import com.toly1994.ds4android.view.OnCtrlClickListener;
+import com.toly1994.ds4android.view.other.OnCtrlClickListener;
 import com.toly1994.ds4android.view.SingleLinkedView;
 
 import java.util.Arrays;
