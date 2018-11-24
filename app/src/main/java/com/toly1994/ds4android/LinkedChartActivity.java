@@ -22,7 +22,7 @@ public class LinkedChartActivity extends AppCompatActivity {
             @Override
             public void onAdd(LinkedView<String> view) {
                 view.addData(ZRandom.randomOf3Name());
-//                view.addData(ZRandom.randomCnName());
+//                view.enqueue(ZRandom.randomCnName());
             }
 
             @Override

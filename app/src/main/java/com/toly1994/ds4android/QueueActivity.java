@@ -18,24 +18,21 @@ public class QueueActivity extends AppCompatActivity {
         view.setOnCtrlClickListener(new CtrlClickAdapter<QueueView<String>>() {
             @Override
             public void onAdd(QueueView<String> view) {
-                view.addData(ZRandom.randomCnName());
-//                view.addData(ZRandom.rangeChar(ZRandom.KUO_HAO));
+                view.enqueue(ZRandom.randomCnName());
+//                view.enqueue(ZRandom.rangeChar(ZRandom.KUO_HAO));
             }
 
             @Override
             public void onRemove(QueueView<String> view) {
-                view.removeData();
+                view.dequeue();
             }
 
             @Override
             public void onFind(QueueView<String> view) {
-                String data = view.findData();
+                String data = view.front();
                 Toast.makeText(QueueActivity.this, data, Toast.LENGTH_SHORT).show();
             }
         });
-
-
         setContentView(view);
-
     }
 }

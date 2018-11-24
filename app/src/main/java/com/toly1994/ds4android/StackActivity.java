@@ -18,18 +18,18 @@ public class StackActivity extends AppCompatActivity {
         view.setOnCtrlClickListener(new CtrlClickAdapter<StackView<String>>() {
             @Override
             public void onAdd(StackView<String> view) {
-//                view.addData(ZRandom.randomCnName());
-                view.addData(ZRandom.rangeChar(ZRandom.KUO_HAO));
+//                view.enqueue(ZRandom.randomCnName());
+                view.push(ZRandom.rangeChar(ZRandom.KUO_HAO));
             }
 
             @Override
             public void onRemove(StackView<String> view) {
-                view.removeData();
+                view.pop();
             }
 
             @Override
             public void onFind(StackView<String> view) {
-                String data = view.findData();
+                String data = view.peek();
                 Toast.makeText(StackActivity.this, data, Toast.LENGTH_SHORT).show();
             }
         });

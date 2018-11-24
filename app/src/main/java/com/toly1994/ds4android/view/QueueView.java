@@ -19,7 +19,7 @@ import com.toly1994.ds4android.analyze.L;
 import com.toly1994.ds4android.analyze.gold12.HelpDraw;
 import com.toly1994.ds4android.analyze.gold12.JudgeMan;
 import com.toly1994.ds4android.ds.impl.queue.ArrayChartQueue;
-import com.toly1994.ds4android.ds.impl.queue.ArrayLoopQueue;
+import com.toly1994.ds4android.ds.impl.queue.SingleLinkedQueue;
 import com.toly1994.ds4android.ds.itf.IQueue;
 import com.toly1994.ds4android.model.QueueBox;
 import com.toly1994.ds4android.view.other.OnCtrlClickListener;
@@ -43,8 +43,9 @@ public class QueueView<E> extends View {
     private Paint mBoderPaint;//路径画笔
     private Paint mCtrlPaint;//几个圆的画笔
 
-//    private IQueue<QueueBox<E>> mQueueBoxes = new ArrayChartQueue<>(4);//普通数组表队列
-    private IQueue<QueueBox<E>> mQueueBoxes = new ArrayLoopQueue<>(4);//普通数组表队列
+    //    private IQueue<QueueBox<E>> mQueueBoxes = new ArrayChartQueue<>(4);//普通数组表队列
+//    private IQueue<QueueBox<E>> mQueueBoxes = new ArrayLoopQueue<>(4);//普通数组表队列
+    private IQueue<QueueBox<E>> mQueueBoxes = new SingleLinkedQueue<>();//普通数组表队列
 
     //用于绘制非栈顶元素(由于Stack无法获取这些元素，所以此集合辅助绘制)
     private List<QueueBox<E>> mUnSeeStackItemBox = new ArrayList<>();
@@ -294,7 +295,7 @@ public class QueueView<E> extends View {
 
 
     /**
-     * 入栈动画
+     * 入队动画
      */
     private void updateBall() {
         if (mQueueBoxes.size() > 0) {
@@ -312,7 +313,7 @@ public class QueueView<E> extends View {
     }
 
     /**
-     * 出栈动画
+     * 出队动画
      */
     private void updateOutBall() {
         if (mQueueBoxes.size() > 0) {
@@ -333,11 +334,11 @@ public class QueueView<E> extends View {
     }
 
     /**
-     * 入栈
+     * 入队
      *
      * @param data 数据
      */
-    public void addData(E data) {
+    public void enqueue(E data) {
         if (!canAdd) {
             return;
         }
@@ -350,8 +351,6 @@ public class QueueView<E> extends View {
         mUnSeeStackItemBox.add(queueBox);
         L.d(mQueueBoxes.size() + L.l());
 
-//        QueueBox box = mQueueBoxes.front();//更新栈顶点位
-
         //获取尾元素--此处验证了队列的大小
         QueueBox box = mUnSeeStackItemBox.get(mQueueBoxes.size() - 1);
         box.x = QUEUE_X - 200;//队首元素更改x
@@ -361,11 +360,11 @@ public class QueueView<E> extends View {
 
 
     /**
-     * 查看栈顶元素
+     * 查看队首元素
      */
-    public E findData() {
+    public E front() {
         if (mQueueBoxes.isEmpty()) {
-            Toast.makeText(getContext(), "栈为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "队列为空", Toast.LENGTH_SHORT).show();
         }
         if (mQueueBoxes.size() > 0) {
             return mQueueBoxes.front().data;
@@ -374,11 +373,11 @@ public class QueueView<E> extends View {
     }
 
     /**
-     * 弹栈
+     * 出队
      */
-    public void removeData() {
+    public void dequeue() {
         if (mQueueBoxes.isEmpty()) {
-            Toast.makeText(getContext(), "栈为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "队列为空", Toast.LENGTH_SHORT).show();
         }
 
         if (mQueueBoxes.size() > 0) {

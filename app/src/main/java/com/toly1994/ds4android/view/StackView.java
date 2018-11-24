@@ -307,7 +307,7 @@ public class StackView<E> extends View {
      *
      * @param data 数据
      */
-    public void addData(E data) {
+    public void push(E data) {
         if (!canAdd) {
             return;
         }
@@ -333,7 +333,7 @@ public class StackView<E> extends View {
     /**
      * 查看栈顶元素
      */
-    public E findData() {
+    public E peek() {
         if (mStackBoxes.isEmpty()) {
             Toast.makeText(getContext(), "栈为空", Toast.LENGTH_SHORT).show();
         }
@@ -346,7 +346,7 @@ public class StackView<E> extends View {
     /**
      * 弹栈
      */
-    public void removeData() {
+    public void pop() {
         if (mStackBoxes.isEmpty()) {
             Toast.makeText(getContext(), "栈为空", Toast.LENGTH_SHORT).show();
         }
