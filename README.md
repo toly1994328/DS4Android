@@ -7,10 +7,7 @@
 -  看得见的数据结构Android版之双链表篇(待完成)
 -  看得见的数据结构Android版之栈（待完成)
 -  看得见的数据结构Android版之队列（待完成)
--  看得见的数据结构Android版之二叉树篇(待完成)
 -  看得见的数据结构Android版之二分搜索树篇(待完成)
--  看得见的数据结构Android版之AVL树篇(待完成)
--  看得见的数据结构Android版之红黑树篇(待完成)
 -  更多数据结构---以后再说吧
 
 ---
@@ -57,10 +54,15 @@
 
 ![队列综合操作.gif](https://upload-images.jianshu.io/upload_images/9414344-ab1590aa27b4fced.gif?imageMogr2/auto-orient/strip)
 
+---
+
+#### 二分搜索树：
+
+![二分搜索树操作合集.gif](https://upload-images.jianshu.io/upload_images/9414344-175cf562b3795815.gif?imageMogr2/auto-orient/strip)
 
 ---
 
-##### 3.总体的思路
+#### 总体的思路
 
 ![综述.png](https://upload-images.jianshu.io/upload_images/9414344-99a900ad5ffc4ac5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 

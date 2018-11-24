@@ -209,7 +209,7 @@ public class HelpDraw {
         //绘制文字
         paint.setTextSize(50);
         canvas.drawText("x", winSize.x - 60, coo.y - 40, paint);
-        canvas.drawText("y", coo.x - 40, winSize.y - 60, paint);
+        canvas.drawText("deep", coo.x - 40, winSize.y - 60, paint);
         paint.setTextSize(25);
         //X正轴文字
         for (int i = 1; i < (winSize.x - coo.x) / 50; i++) {
