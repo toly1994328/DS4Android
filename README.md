@@ -1,17 +1,19 @@
 
 #### 本系列后续更新链接合集：(动态更新)
-##### [看得见的数据结构Android版之开篇前言](https://juejin.im/post/5bf52228e51d4542fc64d92f)
-##### [看得见的数据结构Android版之表的数组实现(数据结构篇)](https://juejin.im/post/5bf626c5e51d450d5441721d)
-##### [看得见的数据结构Android版之表的数组实现(视图篇)](https://juejin.im/post/5bf75f4f6fb9a049c6437d6f)
-##### [看得见的数据结构Android版之单链表篇](https://juejin.im/post/5bf8be9251882516be2ed1ad)
-##### 看得见的数据结构Android版之双链表篇(待完成)
-##### 看得见的数据结构Android版之栈（待完成)
-##### 看得见的数据结构Android版之队列（待完成)
-##### 看得见的数据结构Android版之二叉树篇(待完成)
-##### 看得见的数据结构Android版之二分搜索树篇(待完成)
-##### 看得见的数据结构Android版之AVL树篇(待完成)
-##### 看得见的数据结构Android版之红黑树篇(待完成)
-##### 更多数据结构---以后再说吧
+- [看得见的数据结构Android版之开篇前言](https://juejin.im/post/5bf52228e51d4542fc64d92f)
+- [看得见的数据结构Android版之表的数组实现(数据结构篇)](https://juejin.im/post/5bf626c5e51d450d5441721d)
+- [看得见的数据结构Android版之表的数组实现(视图篇)](https://juejin.im/post/5bf75f4f6fb9a049c6437d6f)
+- [看得见的数据结构Android版之单链表篇](https://juejin.im/post/5bf8be9251882516be2ed1ad)
+-  看得见的数据结构Android版之双链表篇(待完成)
+-  看得见的数据结构Android版之栈（待完成)
+-  看得见的数据结构Android版之队列（待完成)
+-  看得见的数据结构Android版之二叉树篇(待完成)
+-  看得见的数据结构Android版之二分搜索树篇(待完成)
+-  看得见的数据结构Android版之AVL树篇(待完成)
+-  看得见的数据结构Android版之红黑树篇(待完成)
+-  更多数据结构---以后再说吧
+
+---
 
 #### 数组表
 
@@ -23,19 +25,27 @@
 
 ![数组的扩容与缩容](https://upload-images.jianshu.io/upload_images/9414344-cd9e34edd4e06e31.gif?imageMogr2/auto-orient/strip)
 
+---
+
 #### 单链表
 
 ![单链表操作合集.gif](https://upload-images.jianshu.io/upload_images/9414344-d4b27f8f2eda6157.gif?imageMogr2/auto-orient/strip)
 
+
+---
 
 #### 双链表:
 
 ![双链表操作合集.gif](https://upload-images.jianshu.io/upload_images/9414344-b9130b82af8767fb.gif?imageMogr2/auto-orient/strip)
 
 
+---
+
 #### 栈
 
 ![栈操作合集.gif](https://upload-images.jianshu.io/upload_images/9414344-1d4016ae98a8a33f.gif?imageMogr2/auto-orient/strip)
+
+---
 
 #### 队列
 ##### 数组实现普通队列：
@@ -47,6 +57,8 @@
 
 ![队列综合操作.gif](https://upload-images.jianshu.io/upload_images/9414344-ab1590aa27b4fced.gif?imageMogr2/auto-orient/strip)
 
+
+---
 
 ##### 3.总体的思路
 
