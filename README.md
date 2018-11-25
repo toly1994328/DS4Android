@@ -4,13 +4,12 @@
 - [看得见的数据结构Android版之表的数组实现(数据结构篇)](https://juejin.im/post/5bf626c5e51d450d5441721d)
 - [看得见的数据结构Android版之表的数组实现(视图篇)](https://juejin.im/post/5bf75f4f6fb9a049c6437d6f)
 - [看得见的数据结构Android版之单链表篇](https://juejin.im/post/5bf8be9251882516be2ed1ad)
--  看得见的数据结构Android版之双链表篇(待完成)
--  看得见的数据结构Android版之栈（待完成)
--  看得见的数据结构Android版之队列（待完成)
--  看得见的数据结构Android版之二分搜索树篇(待完成)
+- [看得见的数据结构Android版之双链表篇](https://www.jianshu.com/p/99480ab87127)
+- [看得见的数据结构Android版之栈篇](https://www.jianshu.com/p/f3c7f2f64772)
+- [看得见的数据结构Android版之队列篇](https://www.jianshu.com/p/152badcceead)
+- [看得见的数据结构Android版之二分搜索树篇](https://juejin.im/post/5bf9edc56fb9a049ed3087cd)
 -  更多数据结构---以后再说吧
 
----
 
 #### 数组表
 
