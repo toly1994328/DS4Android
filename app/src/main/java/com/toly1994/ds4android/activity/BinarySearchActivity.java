@@ -1,4 +1,4 @@
-package com.toly1994.ds4android;
+package com.toly1994.ds4android.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +18,7 @@ public class BinarySearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         int[] nums = new int[]{
-                10, 8, 6, 16, 9, 12, 15, 72, 99, 14, 7, 5, 11
+                10, 66, 6, 2, 8, 1, 17, 55, 4, 3, 5, 99, 15
         };
 
 
@@ -26,7 +26,7 @@ public class BinarySearchActivity extends AppCompatActivity {
         view.setOnBSTClickListener(new OnBSTClickListener() {
             @Override
             public void onAdd(BinarySearchView view) {
-                if (curIndex < nums.length - 1) {
+                if (curIndex < nums.length) {
                     view.addData(nums[curIndex]);
                     curIndex++;
 
@@ -36,7 +36,7 @@ public class BinarySearchActivity extends AppCompatActivity {
 
             @Override
             public void onRemove(BinarySearchView view) {
-                view.remove(8);
+                view.remove(2);
             }
 
             @Override
@@ -72,13 +72,12 @@ public class BinarySearchActivity extends AppCompatActivity {
                                 "前序遍历：" + orderPREV.toString() + "\n" +
                                 "中序遍历：" + orderIN.toString() + "\n" +
                                 "后序遍历：" + orderPOST.toString() + "\n"
-
                         , Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onContains(BinarySearchView view) {
-                Toast.makeText(BinarySearchActivity.this, "是否包含8：" + view.contains(8), Toast.LENGTH_SHORT).show();
+                Toast.makeText(BinarySearchActivity.this, "是否包含4：" + view.contains(4), Toast.LENGTH_SHORT).show();
             }
         });
 

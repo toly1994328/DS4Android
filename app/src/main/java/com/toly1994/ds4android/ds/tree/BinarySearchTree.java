@@ -47,7 +47,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * @param el 节点元素
      */
     public void add(T el) {
-
         root = addNode(root, el);
     }
 
@@ -100,7 +99,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     /**
-     * 从二分搜索树中删除最大值所在节点
+     * 从二分搜索树中删除最小值所在节点
      *
      * @return
      */
@@ -134,18 +133,38 @@ public class BinarySearchTree<T extends Comparable<T>> {
         orderNodePost(root, els);
     }
 
+
     /**
-     * 后序遍历以target为根的二分搜索树
+     * 二分搜索树的层序遍历，使用队列实现
+     */
+    public void orderLevel( List<T> els) {
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            Node cur = queue.remove();
+            els.add(cur.el);
+            //出队时将孩子入队
+            if (cur.left != null) {
+                queue.add(cur.left);
+            }
+            if (cur.right != null) {
+                queue.add(cur.right);
+            }
+        }
+    }
+
+    /**
+     * 前序遍历以target为根的二分搜索树
      *
      * @param target 目标树根节点
      */
-    private void orderNodePost(Node target, List<T> els) {
+    private void orderPerNode(Node target, List<T> els) {
         if (target == null) {
             return;
         }
-        orderNodePost(target.left, els);
-        orderNodePost(target.right, els);
         els.add(target.el);
+        orderPerNode(target.left, els);
+        orderPerNode(target.right, els);
     }
 
     /**
@@ -162,20 +181,23 @@ public class BinarySearchTree<T extends Comparable<T>> {
         orderNodeIn(target.right, els);
     }
 
+
+
     /**
-     * 前序遍历以target为根的二分搜索树
+     * 后序遍历以target为根的二分搜索树
      *
      * @param target 目标树根节点
      */
-    private void orderPerNode(Node target, List<T> els) {
+    private void orderNodePost(Node target, List<T> els) {
         if (target == null) {
             return;
         }
+        orderNodePost(target.left, els);
+        orderNodePost(target.right, els);
         els.add(target.el);
-
-        orderPerNode(target.left, els);
-        orderPerNode(target.right, els);
     }
+
+
 
 
     /**
@@ -247,25 +269,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
 
-    /**
-     * 二分搜索树的层序遍历，使用队列实现
-     */
-    public void orderLevel( List<T> els) {
-        Queue<Node> queue = new LinkedList<>();
-        queue.add(root);
-        while (!queue.isEmpty()) {
-            Node cur = queue.remove();
-            els.add(cur.el);
-            //出队时将孩子入队
-            if (cur.left != null) {
-                queue.add(cur.left);
-            }
-            if (cur.right != null) {
-                queue.add(cur.right);
-            }
-        }
-    }
-
 // endregion
 
 
@@ -300,20 +303,16 @@ public class BinarySearchTree<T extends Comparable<T>> {
             size++;
             return new Node(null, null, el);
         }
-
         //节点相同，并且不允许重复时
         if (el.equals(target.el) && !canSame) {
             return target;//传入值与父节点值相同,并且不允许相同时
         }
-
         if (el.compareTo(target.el) <= 0) {
-
             target.left = addNode(target.left, el);
-
-            target.left.deep = target.deep + 1;
+            target.left.deep = target.deep + 1;//!为方便视图绘制---维护deep
         } else if (el.compareTo(target.el) > 0) {
             target.right = addNode(target.right, el);
-            target.right.deep = target.deep + 1;
+            target.right.deep = target.deep + 1;//!为方便视图绘制---维护deep
         }
         return target;
     }
@@ -392,7 +391,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
                     successor.right = removeMinNode(target.right);
                     successor.left = target.left;
                     target.left = target.right = null;
-
                     return successor;
             }
         }

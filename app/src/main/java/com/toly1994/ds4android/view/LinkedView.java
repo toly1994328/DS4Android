@@ -293,6 +293,7 @@ public class LinkedView<E> extends View {
                                     break;
                                 case 7://清空
                                     mOnCtrlClickListener.onClear(this);
+                                    selectIndex = -1;
                                     break;
                             }
                             CTRL_COLOR[i] = 0xff54E1F8;//点击更换颜色

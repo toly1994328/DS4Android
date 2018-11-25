@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ArrayChartActivity">
+    tools:context=".activity.ArrayChartActivity">
 
     <com.toly1994.ds4android.view.ArrayView
         android:id="@+id/id_av"

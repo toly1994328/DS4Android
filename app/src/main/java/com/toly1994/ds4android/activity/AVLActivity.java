@@ -1,4 +1,4 @@
-package com.toly1994.ds4android;
+package com.toly1994.ds4android.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

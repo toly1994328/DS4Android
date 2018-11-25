@@ -187,14 +187,11 @@ public class BinarySearchView<E extends Comparable<E>> extends View {
      */
     private void dataView(Canvas canvas) {
         if (!mTreeBalls.isEmpty()) {
-
             canvas.save();
             canvas.translate(ROOT_X, ROOT_Y);
-
             BinarySearchTree<TreeNode<E>>.Node root = mTreeBalls.getRoot();
             canvas.drawCircle(0, 0, NODE_RADIUS, mPaint);
             canvas.drawText(root.el.data.toString(), 0, 10, mTxtPaint);
-
             drawNode(canvas, root);
             canvas.restore();
 
@@ -202,49 +199,43 @@ public class BinarySearchView<E extends Comparable<E>> extends View {
     }
 
     private void drawNode(Canvas canvas, BinarySearchTree<TreeNode<E>>.Node node) {
+        float thta = (float) ((60 - node.deep * 10) * Math.PI / 180);//父节点与子节点竖直方向夹角
+        int lineLen = (int) (150 / ((node.deep + .5)));//线长
 
-        float thta = (float) ((60 - node.deep * 10) * Math.PI / 180);
-        int mLineLen = (int) (150 / ((node.deep + .5)));
+        float offsetX = (float) (NODE_RADIUS * Math.sin(thta));//将起点偏移圆心X，到圆上
+        float offsetY = (float) (NODE_RADIUS * Math.cos(thta));//将起点偏移圆心X，到圆上
 
-        float offsetX = (float) (NODE_RADIUS * Math.sin(thta));
-        float offsetY = (float) (NODE_RADIUS * Math.cos(thta));
+        //画布移动的X
+        float translateOffsetX = (float) ((lineLen + 2 * NODE_RADIUS) * Math.sin(thta));
+        //画布移动的Y
+        float translateOffsetY = (float) ((lineLen + 2 * NODE_RADIUS) * Math.cos(thta));
 
-
-        float translateOffsetX = (float) ((mLineLen + 2 * NODE_RADIUS) * Math.sin(thta));
-        float translateOffsetY = (float) ((mLineLen + 2 * NODE_RADIUS) * Math.cos(thta));
-
-
-        float moveX = (float) (mLineLen * Math.sin(thta));
-        float moveY = (float) (mLineLen * Math.cos(thta));
+        float moveX = (float) (lineLen * Math.sin(thta));//线移动的X
+        float moveY = (float) (lineLen * Math.cos(thta));//线移动的Y
 
         if (node.right != null) {
             canvas.save();
-            canvas.translate(translateOffsetX, translateOffsetY);
-            canvas.drawCircle(0, 0, NODE_RADIUS, mPaint);
-            mPath.reset();
+            canvas.translate(translateOffsetX, translateOffsetY);//每次将画布移到右子的圆心
+            canvas.drawCircle(0, 0, NODE_RADIUS, mPaint);//画圆
+            mPath.reset();//画线
             mPath.moveTo(-offsetX, -offsetY);
             mPath.lineTo(-offsetX, -offsetY);
-
-
             mPath.rLineTo(-moveX, -moveY);
             canvas.drawPath(mPath, mPathPaint);
-            canvas.drawText(node.right.el.data.toString(), 0, 10, mTxtPaint);
+            canvas.drawText(node.right.el.data.toString(), 0, 10, mTxtPaint);//画字
             drawNode(canvas, node.right);
             canvas.restore();
         }
-
-        if (node.left != null) {
+        if (node.left != null) {//同理
             canvas.save();
             canvas.translate(-translateOffsetX, translateOffsetY);
             mPath.reset();
             mPath.moveTo(offsetX, -offsetY);
             mPath.rLineTo(moveX, -moveY);
             canvas.drawPath(mPath, mPathPaint);
-
             canvas.drawCircle(0, 0, NODE_RADIUS, mPaint);
             canvas.drawText(node.left.el.data.toString(), 0, 10, mTxtPaint);
             drawNode(canvas, node.left);
-
             canvas.restore();
         }
     }

@@ -1,4 +1,4 @@
-package com.toly1994.ds4android;
+package com.toly1994.ds4android.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,8 +21,8 @@ public class SingleLinkedChartActivity extends AppCompatActivity {
         view.setOnCtrlClickListener(new OnCtrlClickListener<SingleLinkedView<String>>() {
             @Override
             public void onAdd(SingleLinkedView<String> view) {
-                view.addData(ZRandom.randomOf3Name());
-//                view.enqueue(ZRandom.randomCnName());
+//                view.addData(ZRandom.randomOf3Name());
+                view.addData(ZRandom.randomCnName());
             }
 
             @Override
