@@ -10,6 +10,7 @@
 - [看得见的数据结构Android版之二分搜索树篇](https://juejin.im/post/5bf9edc56fb9a049ed3087cd)
 -  更多数据结构---以后再说吧
 
+如果想要玩玩的可以直接安装里面的DS4Android.apk
 
 #### 数组表
 
